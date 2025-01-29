@@ -11,13 +11,13 @@
   </head>
 
   <body class="h-full">
+    <%= render 'layouts/navigation' %>
     <% if notice %>
       <p class="notice"><%= notice %></p>
     <% end %>
     <% if alert %>
       <p class="alert"><%= alert %></p>
     <% end %>
-    <%= render 'layouts/navigation' %>
     <main class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-6">
       <%= yield %>
     </main>
