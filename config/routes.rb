@@ -1,5 +1,8 @@
 Rails.application.routes.draw do
-  devise_for :users, controllers: { registrations: 'registrations' }
+  devise_for :users, controllers: { 
+    registrations: 'registrations',
+    sessions: 'devise/sessions'
+  }
   get "up" => "rails/health#show", as: :rails_health_check
   root "pages#home"
   get '/about', to: 'pages#about', as: :about
