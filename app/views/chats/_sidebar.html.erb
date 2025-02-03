@@ -1,0 +1,16 @@
+<div class="p-4">
+  <div class="flex justify-between items-center mb-4">
+    <h2 class="text-xl font-bold">Chats</h2>
+    <%= link_to "New chat", new_chat_path, class: "text-green-500 hover:text-green-400" %>
+  </div>
+  
+  <div id="chats-sidebar">
+    <% if @chats&.any? %>
+      <% @chats.each do |chat| %>
+        <%= render chat %>
+      <% end %>
+    <% else %>
+      <p class="text-gray-500">No chats found.</p>
+    <% end %>
+  </div>
+</div>

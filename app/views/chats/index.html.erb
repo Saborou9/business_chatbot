@@ -1,21 +1,16 @@
 <% content_for :title, "Chats" %>
 
-<div class="w-full">
-  <div class="flex justify-between items-center">
-    <h1 class="font-bold text-4xl">Chats</h1>
-    <%= link_to "New chat", new_chat_path, class: "rounded-md px-3.5 py-2.5 bg-blue-600 hover:bg-blue-500 text-white block font-medium" %>
-  </div>
+<% content_for :title, "Chats" %>
 
-  <div id="chats" class="min-w-full">
-    <% if @chats.any? %>
-      <% @chats.each do |chat| %>
-        <%= render chat %>
-        <p>
-          <%= link_to "Show this chat", chat, class: "ml-2 rounded-md px-3.5 py-2.5 bg-gray-100 hover:bg-gray-50 inline-block font-medium" %>
-        </p>
-      <% end %>
-    <% else %>
-      <p class="text-center my-10">No chats found.</p>
-    <% end %>
-  </div>
+<div class="w-full">
+  <h1 class="font-bold text-4xl mb-6">Chat Details</h1>
+  
+  <% if @chats.any? %>
+    <div id="chat-content">
+      <!-- Your main chat content goes here -->
+      <!-- This could be the content of the selected chat -->
+    </div>
+  <% else %>
+    <p class="text-center my-10">No chat selected.</p>
+  <% end %>
 </div>
