@@ -10,7 +10,7 @@
     <%= javascript_importmap_tags %>
   </head>
 
-  <body class="h-full flex flex-col overflow-hidden">
+  <body class="h-full flex flex-col">
     <% unless user_signed_in? && controller_name == 'chats' %>
       <%= render 'layouts/navigation' %>
     <% end %>
@@ -27,6 +27,6 @@
         <%= yield %>
       </div>
     </main>
-    
+
   </body>
 </html>

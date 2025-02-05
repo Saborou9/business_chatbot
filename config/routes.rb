@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  devise_for :users
+  devise_for :users, sign_out_via: [ :get, :delete ]
   resources :chats, except: [ :edit, :update ]
   get "/about", to: "pages#about", as: :about
   get "/pricing", to: "pages#pricing", as: :pricing
