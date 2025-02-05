@@ -17,11 +17,8 @@
 
 <div class="p-4 border-t border-gray-700">
   <div class="flex items-center">
-    <div class="mr-3">
-      <%= image_tag current_user.avatar || 'default_avatar.png', class: "w-10 h-10 rounded-full" %>
-    </div>
     <div class="flex-grow">
-      <p class="text-sm font-semibold"><%= current_user.name || current_user.email %></p>
+      <p class="text-sm font-semibold"><%= current_user.email %></p>
     </div>
     <%= link_to edit_user_registration_path, class: "text-gray-400 hover:text-white" do %>
       <i class="fas fa-cog"></i>
