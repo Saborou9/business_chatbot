@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html class="h-full bg-black">
+<html class="h-full bg-black overflow-hidden">
   <head>
     <title><%= content_for(:title) || "BusinessBuddy" %></title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -10,7 +10,7 @@
     <%= javascript_importmap_tags %>
   </head>
 
-  <body class="h-full flex flex-col">
+  <body class="h-full flex flex-col m-0 p-0 overflow-hidden">
     <% unless user_signed_in? && controller_name == 'chats' %>
       <%= render 'layouts/navigation' %>
     <% end %>
