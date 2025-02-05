@@ -23,13 +23,15 @@
         <p class="alert"><%= alert %></p>
       <% end %>
       
-      <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-6">
+      <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-6 min-h-full">
         <%= yield %>
       </div>
     </main>
     
     <% unless user_signed_in? && controller_name == 'chats' %>
-      <%= render 'layouts/footer' %>
+      <div class="mt-auto">
+        <%= render 'layouts/footer' %>
+      </div>
     <% end %>
   </body>
 </html>
