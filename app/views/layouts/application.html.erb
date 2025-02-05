@@ -10,7 +10,7 @@
     <%= javascript_importmap_tags %>
   </head>
 
-  <body class="h-full flex flex-col">
+  <body class="h-full flex flex-col overflow-hidden">
     <% unless user_signed_in? && controller_name == 'chats' %>
       <%= render 'layouts/navigation' %>
     <% end %>
@@ -28,6 +28,5 @@
       </div>
     </main>
     
-    <!-- Footer removed -->
   </body>
 </html>
