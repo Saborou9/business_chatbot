@@ -12,13 +12,17 @@
 
   <body class="h-full flex">
     <% if user_signed_in? && controller_name == 'chats' %>
-      <div class="w-64 bg-gray-900 text-white">
+      <div class="w-64 bg-gray-900 text-white flex flex-col">
         <%= render 'chats/sidebar' %>
       </div>
+    <% else %>
+      <%= render 'layouts/navigation' %>
     <% end %>
     
     <div class="flex-1 flex flex-col">
-      <%= render 'layouts/navigation' %>
+      <% unless user_signed_in? && controller_name == 'chats' %>
+        <%= render 'layouts/navigation' %>
+      <% end %>
       
       <main class="flex-1 overflow-y-auto">
         <% if notice %>
@@ -33,7 +37,9 @@
         </div>
       </main>
       
-      <%= render 'layouts/footer' %>
+      <% unless user_signed_in? && controller_name == 'chats' %>
+        <%= render 'layouts/footer' %>
+      <% end %>
     </div>
   </body>
 </html>
