@@ -4,7 +4,7 @@ class ChatsController < ApplicationController
 
   # GET /chats or /chats.json
   def index
-    @chats = current_user.chats.all
+    @chats = current_user.chats
   end
 
   # GET /chats/1 or /chats/1.json
@@ -44,11 +44,11 @@ class ChatsController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_chat
-      @chat = current_user.chats.find(params.expect(:id))
+      @chat = current_user.chats.find(params.require(:id))
     end
 
     # Only allow a list of trusted parameters through.
     def chat_params
-      params.expect(chat: [ :title ])
+      params.require(:chat).permit(:title)
     end
 end
