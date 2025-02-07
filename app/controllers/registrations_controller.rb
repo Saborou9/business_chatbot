@@ -4,6 +4,7 @@ class RegistrationsController < Devise::RegistrationsController
   protected
 
   def sign_up_params
+    puts "Params received: #{params.inspect}"
     params.require(:user).permit(:username, :email, :password, :password_confirmation)
   end
 
