@@ -38,3 +38,6 @@ yarn.lock
 /app/assets/builds/*
 !/app/assets/builds/.keep
 .aider*
+
+# python api
+/python_api/bot_env/
