@@ -9,6 +9,10 @@ class ChatsController < ApplicationController
 
   # GET /chats/1 or /chats/1.json
   def show
+    respond_to do |format|
+      format.html { render :show }
+      format.turbo_stream
+    end
   end
 
   # GET /chats/new
