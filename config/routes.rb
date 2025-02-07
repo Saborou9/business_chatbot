@@ -1,9 +1,9 @@
 Rails.application.routes.draw do
   resources :messages
-  devise_for :users, 
+  devise_for :users,
     sign_out_via: [ :get, :delete ],
-    controllers: { 
-      registrations: 'registrations' 
+    controllers: {
+      registrations: "registrations"
     }
   resources :chats, except: [ :edit, :update ]
   get "/about", to: "pages#about", as: :about
