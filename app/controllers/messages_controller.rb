@@ -11,7 +11,7 @@ class MessagesController < ApplicationController
         format.html { redirect_to @chat }
       else
         format.turbo_stream { render turbo_stream: turbo_stream.replace(@message, partial: "messages/form", locals: { chat: @chat, message: @message }) }
-        format.html { render 'chats/show', status: :unprocessable_entity }
+        format.html { render "chats/show", status: :unprocessable_entity }
       end
     end
   end
@@ -23,6 +23,6 @@ class MessagesController < ApplicationController
   end
 
   def message_params
-    params.require(:message).permit(:content)
+    params.require(:message).permit(:context)
   end
 end
