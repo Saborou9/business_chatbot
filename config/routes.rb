@@ -5,7 +5,9 @@ Rails.application.routes.draw do
     controllers: {
       registrations: "registrations"
     }
-  resources :chats, except: [ :edit, :update ]
+  resources :chats, except: [ :edit, :update ] do
+    resources :messages, only: [:create]
+  end
   get "/about", to: "pages#about", as: :about
   get "/pricing", to: "pages#pricing", as: :pricing
   # Chat routes
