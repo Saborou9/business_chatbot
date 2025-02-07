@@ -1,6 +1,22 @@
-<div id="<%= dom_id message %>">
-  <p class="my-5">
-    <strong class="block font-medium mb-1">Chat:</strong>
-    <%= message.chat_id %>
-  </p>
+<div id="<%= dom_id message %>" class="mb-4">
+  <div class="flex items-start">
+    <div class="flex-shrink-0 mr-3">
+      <% if message.user.respond_to?(:avatar) && message.user.avatar.attached? %>
+        <%= image_tag message.user.avatar.variant(resize_to_limit: [40, 40]), class: "rounded-full" %>
+      <% else %>
+        <div class="w-10 h-10 rounded-full bg-gray-300 flex items-center justify-center">
+          <%= message.user.email[0].upcase %>
+        </div>
+      <% end %>
+    </div>
+    <div class="flex-1">
+      <div class="flex items-center mb-1">
+        <span class="font-semibold mr-2"><%= message.user.email %></span>
+        <span class="text-xs text-gray-500"><%= message.created_at.strftime("%I:%M %p") %></span>
+      </div>
+      <div class="bg-gray-100 p-3 rounded-lg">
+        <%= message.content %>
+      </div>
+    </div>
+  </div>
 </div>
