@@ -16,4 +16,10 @@ class User < ApplicationRecord
       message: "can only contain letters, numbers, and underscores"
     },
     length: { minimum: 3, maximum: 20 }
+
+  validates :preferred_model,
+    inclusion: {
+      in: [ "GPT-3.5", "GPT-4", "Claude-2", "Gemini", "Anthropic" ],
+      allow_nil: true
+    }
 end
