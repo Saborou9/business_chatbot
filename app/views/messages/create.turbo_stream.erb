@@ -1,6 +1,6 @@
 <%= turbo_stream.append "messages" do %>
   <div class="bg-gray-100 p-2 rounded-md">
-    <p class="text-sm text-gray-700"><%= @message.content %></p>
+    <p class="text-sm text-gray-700"><%= @message.context %></p>
     <small class="text-xs text-gray-500"><%= @message.user.email %> at <%= @message.created_at.strftime("%H:%M") %></small>
   </div>
 <% end %>
