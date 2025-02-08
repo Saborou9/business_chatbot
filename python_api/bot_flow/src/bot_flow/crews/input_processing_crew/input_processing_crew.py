@@ -7,7 +7,7 @@ from crewai.project import CrewBase, agent, crew, task
 
 
 @CrewBase
-class PoemCrew:
+class InputProcessingCrew:
     """Poem Crew"""
 
     # Learn more about YAML configuration files here:
