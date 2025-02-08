@@ -1,0 +1,81 @@
+web_scraping_task:
+  description: >
+    Scrape and extract the complete content from the following URL:
+    
+    ===URL===
+    {url}
+    ===URL===
+
+    Focus on identifying content relevant content, by removing all content that is not part of the article.
+    DO NOT interpret the content
+    DO NOT sumnmarize the content
+    DO NOT shorten or modify in any form or fashion
+    DO NOT include any ads, navigation, links, comments, or other irrelevant content
+    DO NOT include any images or videos
+    ALWAYS return the whole content of the article from the parsed web page
+
+  expected_output: >
+    A structured document in markdown format containing:
+    - Metadata annotations - only source URL and publication date, if available.
+    - The complete content of the website cleaned from irrelevant data such as: ads, navigation, comments, etc.
+
+content_summary_task:
+  description: >
+    Summarize the provided content from a scraped web page into a concise and structured summary, 
+    focusing on key points directly relevant to {topic}. The summary must be clear, engaging, and 
+    between **200 and 400 words** long.
+
+    Objectives:
+    - Focus only on the core ideas and important information from the content.
+    - Exclude any unnecessary details, filler content, or repetitive information.
+    - Ensure the summary is cohesive, logical, and suitable as input for a podcast outline.
+    - Use neutral language—do NOT add personal interpretations or opinions.
+    - Do NOT include metadata, URLs, or publication dates in the summary.
+    - Maintain a professional tone, ensuring the content is factually accurate and directly relevant to {topic}.
+
+    Example:
+    Input:
+    Title: The Role of AI in Cryptocurrency Trading  
+    Publication Date: January 10, 2025  
+    Source: example.com
+    Artificial Intelligence (AI) has become a key player in cryptocurrency trading. By leveraging machine learning algorithms, traders can now analyze vast datasets to predict market movements with greater accuracy. For example, platforms like CryptoPredict use AI to process real-time market data, identify trading patterns, and provide actionable insights. These technologies not only improve the speed of trading decisions but also reduce the risk of human error.
+    In addition to market analysis, AI is being employed in fraud detection. Given the decentralized and anonymous nature of cryptocurrencies, fraud prevention is a significant challenge. AI models can monitor blockchain transactions and flag suspicious activity, helping exchanges prevent fraudulent behavior.
+    However, AI in crypto trading isn’t without its challenges. Issues such as data quality, overfitting of models, and ethical concerns about algorithmic decision-making remain important areas of discussion. Despite these challenges, the role of AI in cryptocurrency trading is expected to grow, with more traders and exchanges adopting these technologies to gain a competitive edge.
+
+    Output:
+    Artificial Intelligence (AI) is transforming cryptocurrency trading by enabling more accurate market analysis and faster decision-making. Platforms like CryptoPredict use AI to process real-time data, detect patterns, and provide insights that improve trading outcomes and reduce human error. Additionally, AI is being employed to enhance fraud detection, a critical challenge in the decentralized and anonymous world of crypto. By monitoring blockchain transactions and flagging anomalies, AI models help exchanges mitigate fraudulent activities.
+    Despite these advancements, there are challenges in implementing AI in crypto trading. Data quality issues, the risk of overfitting models to specific patterns, and ethical concerns surrounding algorithmic decision-making remain important topics in the field.
+
+  expected_output: >
+    A well-structured summary (200–400 words) of the provided content, focusing only on relevant 
+    and important points, excluding irrelevant or distracting details.
+
+generate_section_from_summary_task:
+  description: >
+    Generate a single section for a podcast outline from the provided web page summary.
+    The section MUST be clear, concise, and directly relevant to the podcast topic.
+
+    Objectives:
+    - Create a section title and a brief description (100–300 words) summarizing the key ideas from the provided summary.
+    - Identify 1–3 key talking points for this section, ensuring they are relevant and engaging.
+    - Ensure the content stays strictly within the context of the provided summary.
+    - Do NOT invent content—only use information available in the provided summary.
+    - Ensure the section can be easily integrated into a broader podcast outline with other sections.
+
+    Example Output:
+
+    **Section Title: AI in Market Prediction**
+
+    **Description**:
+    This section highlights how AI is transforming market prediction in the crypto space, enabling traders to make faster and more informed decisions. AI-driven platforms can analyze large datasets, detect patterns, and offer real-time actionable insights.
+
+    **Key Talking Points**:
+    1. Machine learning models analyze datasets like historical prices, trading volumes, and sentiment data.
+    2. Examples of AI-driven platforms helping traders make better decisions.
+    3. Benefits of AI in market prediction, including improved accuracy and speed.
+  
+  expected_output: >
+    A single section for a podcast outline containing:
+    - Section title.
+    - Brief description (100–300 words) summarizing the key ideas from the provided summary.
+    - 1–3 key talking points that are relevant and engaging.

@@ -1,0 +1,29 @@
+search_task:
+  description: >
+    CURRENT DATE IS: {current_date} ALWAYS WORK WITH THE MOST RECENT DATA
+    Perform a web search for trending {topic} stories and analyze the top stories to select the best ones for podcast content.
+
+    Objectives:
+    - Identify and analyze the top stories related to {topic}
+    - Select the {search_results_parsed} most relevant and engaging stories suitable for podcast discussions
+    - Focus on stories with viral potential, recent trends, or significant impact on the {topic} domain
+    - Return their titles and links
+
+    Parsing Rules:
+    - Only consider stories found in the "trending" list of the search results
+    - Select the {search_results_parsed} best stories based on relevance to {topic}, recent trends in the {topic} domain, and podcast suitability
+    - Prioritize stories that are insightful, newsworthy, or spark engaging discussions
+    - Ensure the response contains no other information beyond the titles and links
+
+    Your final response MUST include ONLY the following fields:
+      * stories: A list of approximately {search_results_parsed} stories, each with:
+        - title: The title of the story
+        - link: The link to the story
+    Your final response MUST include approximately {search_results_parsed} results.
+
+  expected_output: >
+    stories:
+      - title: Title of the first story
+        link: Link to the first story
+      - title: Title of the second story
+        link: Link to the second story
