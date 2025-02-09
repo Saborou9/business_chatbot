@@ -4,7 +4,7 @@ from crewai.project import CrewBase, agent, crew, task
 from python_api.bot_flow.src.bot_flow.shared_utils.model_utils import get_model_identifier, get_model_api_key
 
 @CrewBase
-class BusinessKnowledgeCrew:
+class FactCheckingCrew:
     """Business Knowledge Crew"""
 
     def __init__(
