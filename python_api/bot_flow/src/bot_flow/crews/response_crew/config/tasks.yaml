@@ -1,0 +1,11 @@
+finalize_response:
+  description: >
+    Process the results from one or more of the following sources: Scrape Crew, Business Crew, or Legal Crew. 
+    - Identify the key points in the response. 
+    - Remove unnecessary details, making the answer clear and easy to understand.
+    - Structure the response with clear takeaways, bullet points, or short paragraphs.
+    - Ensure the response is engaging and directly answers the user’s question.
+    - If the response is uncertain, add a disclaimer or suggest further research.
+  expected_output: >
+    - A final, well-structured response: "{final_response}".
+    - If applicable, a disclaimer or follow-up suggestion: "{disclaimer_or_suggestion}".
