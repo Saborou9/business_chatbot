@@ -41,7 +41,7 @@ class FactCheckingCrew:
     def verify_response_task(self) -> Task:
         return Task(
             config=self.tasks_config["verify_response"],
-            agent=self.input_processing_agent()
+            agent=self.fact_checking_agent()
         )
 
     @crew
