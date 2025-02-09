@@ -1,0 +1,9 @@
+provide_legal_guidance:
+  description: >
+    Analyze the user’s legal question: {question}.
+    - Determine the legal area involved (e.g., contracts, taxes, intellectual property, GDPR compliance).
+    - Provide a general explanation and guidance on best practices.
+    - Avoid offering direct legal advice and instead direct users to consult a professional if needed.
+  expected_output: >
+    - A clear and structured legal guidance response: "{legal_guidance}".
+    - A disclaimer emphasizing that professional legal advice may be required.
