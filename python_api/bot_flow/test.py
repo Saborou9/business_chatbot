@@ -20,7 +20,7 @@ inputs = {
      'hosts_names': ['Roland', 'Eleanora', 'Cedric', 'Isabelle'],
 }
 
-StorytellingFlow(
+BuddyFlow(
     user_id=1,
     directory="10_2025_01_23_21_10_54",
     show_logs=False,
