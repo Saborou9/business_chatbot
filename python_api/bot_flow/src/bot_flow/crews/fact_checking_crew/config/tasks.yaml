@@ -1,0 +1,9 @@
+verify_response:
+  description: >
+    Review the response generated for the user question: {question}.
+    - Cross-check the accuracy of the response using reliable sources.
+    - Flag any statements that are misleading, outdated, or require further validation.
+    - Ensure that the final response is factual and trustworthy.
+  expected_output: >
+    - A verified and fact-checked answer: "{final_verified_answer}".
+    - If necessary, a correction or clarification: "{correction_note}".
