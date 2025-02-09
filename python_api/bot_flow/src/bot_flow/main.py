@@ -1,4 +1,7 @@
 #!/usr/bin/env python
+import os
+from datetime import datetime
+from typing import List
 from random import randint
 from pydantic import BaseModel
 from crewai.flow import Flow, listen, start, router, or_
@@ -45,7 +48,7 @@ class BuddyFlow(Flow[BuddyState]):
         self.search_results_parsed = search_results_parsed
         self.model_name = model_name
         self.current_date = datetime.now().strftime("%Y-%m-%d")
-        self.knowledge_collection_name = f"knowledge_{user_id}_{datetime.now().strftime('%Y-%m-%d_%H-%M-%S')}"
+        self.knowledge_collection_name = f"knowledge_default_{datetime.now().strftime('%Y-%m-%d_%H-%M-%S')}"
 
         self.utils = FlowUtils()
 
