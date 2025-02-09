@@ -16,6 +16,7 @@ from bot_flow.crews.search_crew import SearchCrew
 
 
 class BuddyState(BaseModel):
+    question: str = ""
     input_details: dict = {}
     search_results_links: SearchResults = None
     raw_outlines: SimpleOutline = None
@@ -28,6 +29,7 @@ class BuddyFlow(Flow[BuddyState]):
 
     def __init__(
         self,
+        question: str,
         show_logs: bool,
         directory: str,
         search_timeframe: str,
@@ -54,6 +56,9 @@ class BuddyFlow(Flow[BuddyState]):
         # create scraped subdirectory in output directory
         if not os.path.exists(f"{self.directory}/scraped"):
             os.makedirs(f"{self.directory}/scraped")
+        
+        # Set the question in the state
+        self.state = BuddyState(question=question)
 
     @start()
     def process_input(self):
@@ -64,10 +69,12 @@ class BuddyFlow(Flow[BuddyState]):
                 model_name=self.model_name
             )
             .crew()
-            .kickoff(inputs={})
+            .kickoff(inputs={
+                'question': self.state.question
+            })
         )
         self.update_token_usage("input_processing", result.token_usage)
-        self.state = BuddyState(**result.pydantic)
+        self.state.input_details = result.pydantic
         self.utils.save_step_result_to_file(self.directory, "process_input", self.state, format="pydantic")
 
     @listen(process_input)
@@ -101,7 +108,7 @@ class BuddyFlow(Flow[BuddyState]):
         #     datax = json.load(f)
         #     self.state.search_results_links = SearchResults(**datax)
         
-        inputs_array = [{"topic": self.topic, "url": link.link, "word_count": self.word_count} for link in self.state.search_results_links.search_results]
+        inputs_array = [{"topic": self.state.input_details.get('refined_question', ''), "url": link.link, "word_count": self.word_count} for link in self.state.search_results_links.search_results]
 
         # Remove all files from scrped directory
         for file in os.listdir(f"{self.directory}/scraped"):
