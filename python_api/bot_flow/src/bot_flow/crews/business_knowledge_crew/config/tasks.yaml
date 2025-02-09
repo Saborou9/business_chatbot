@@ -1,0 +1,10 @@
+provide_business_answer:
+  description: >
+    Receive a business-related question: {question}.
+    - Analyze the question and determine the most relevant business domain (e.g., marketing, finance, legal, operations).
+    - Use your expert knowledge and available data to generate a detailed, structured answer.
+    - Ensure the response is practical and actionable for small businesses and startups.
+    - If needed, suggest additional resources for further learning.
+  expected_output: >
+    - A structured business answer: "{expert_answer}".
+    - Recommended next steps or resources if applicable.
