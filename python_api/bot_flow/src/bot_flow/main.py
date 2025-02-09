@@ -16,8 +16,12 @@ from bot_flow.crews.search_crew import SearchCrew
 
 
 class BuddyState(BaseModel):
-    sentence_count: int = 1
-    poem: str = ""
+    input_details: dict = {}
+    search_results_links: SearchResults = None
+    raw_outlines: SimpleOutline = None
+    parsed_webpages: List[str] = []
+    full_outlines: FullOutline = None
+    response: str = ""
 
 
 class BuddyFlow(Flow[BuddyState]):
