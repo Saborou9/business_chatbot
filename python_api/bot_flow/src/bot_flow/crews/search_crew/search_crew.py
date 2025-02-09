@@ -3,11 +3,9 @@ import os
 from crewai import Agent, Crew, Process, Task, LLM
 from crewai.project import CrewBase, agent, crew, task
 
-from shared_utils.model_utils import get_model_identifier, get_model_api_key
-
-from news_commentary.src.news_commentary.types.types import SearchResults
-
-from news_commentary.src.news_commentary.tools.serper_dev_tool import SerperDevTool
+from python_api.bot_flow.src.bot_flow.shared_utils.model_utils import get_model_identifier, get_model_api_key
+from python_api.bot_flow.src.bot_flow.types.types import SearchResults
+from python_api.bot_flow.src.bot_flow.tools.serper_dev_tool import SerperDevTool
 
 @CrewBase
 class SearchCrew:
