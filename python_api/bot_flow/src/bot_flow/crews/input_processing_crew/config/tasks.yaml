@@ -1,7 +1,12 @@
-write_poem:
+process_input:
   description: >
-    Write a poem about how CrewAI is awesome.
-    Ensure the poem is engaging and adheres to the specified sentence count of {sentence_count}.
+    Receive a user question: {question}.
+    - Identify the core intent of the question (e.g., business strategy, competitor analysis, legal guidance).
+    - Remove any unnecessary or irrelevant words while preserving the original meaning.
+    - Reformat the question for better clarity, ensuring it is structured as a concise query.
+    - Categorize the question into predefined topics (e.g., Marketing, Finance, Operations).
+    - If needed, suggest additional clarifications or refinements to ensure the best response.
   expected_output: >
-    A beautifully crafted poem about CrewAI, with exactly {sentence_count} sentences.
-  agent: poem_writer
+    - A refined and structured version of the user question: "{refined_question}".
+    - Identified intent: "{intent_category}".
+    - If necessary, an additional clarification request: "{clarification_request}".

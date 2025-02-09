@@ -1,47 +1,56 @@
 from crewai import Agent, Crew, Process, Task
 from crewai.project import CrewBase, agent, crew, task
 
-# If you want to run a snippet of code before or after the crew starts,
-# you can use the @before_kickoff and @after_kickoff decorators
-# https://docs.crewai.com/concepts/crews#example-crew-class-with-decorators
-
+from python_api.bot_flow.src.bot_flow.shared_utils.model_utils import get_model_identifier, get_model_api_key
 
 @CrewBase
 class InputProcessingCrew:
     """Poem Crew"""
 
-    # Learn more about YAML configuration files here:
-    # Agents: https://docs.crewai.com/concepts/agents#yaml-configuration-recommended
-    # Tasks: https://docs.crewai.com/concepts/tasks#yaml-configuration-recommended
+    def __init__(
+        self,
+        show_logs=False,
+        model_name="4o-mini",
+        directory="",
+    ):
+        self.show_logs = show_logs
+        self.model_name = model_name
+        self.directory = directory
+
     agents_config = "config/agents.yaml"
     tasks_config = "config/tasks.yaml"
 
-    # If you would lik to add tools to your crew, you can learn more about it here:
-    # https://docs.crewai.com/concepts/agents#agent-tools
     @agent
-    def poem_writer(self) -> Agent:
+    def input_processing_agent(self) -> Agent:
         return Agent(
-            config=self.agents_config["poem_writer"],
+            config=self.agents_config["input_processing_agent"],
+            llm=LLM(
+                model=get_model_identifier(self.model_name),
+                api_key=os.getenv(get_model_api_key(self.model_name)),
+                max_tokens=8192,
+                temperature=0.1,
+                top_p=0.65,
+                presence_penalty=0.1,
+                frequency_penalty=0.4,
+            ),
+            verbose=self.show_logs,
+            cache=False
         )
 
-    # To learn more about structured task outputs,
-    # task dependencies, and task callbacks, check out the documentation:
-    # https://docs.crewai.com/concepts/tasks#overview-of-a-task
     @task
-    def write_poem(self) -> Task:
+    def process_input_task(self) -> Task:
         return Task(
-            config=self.tasks_config["write_poem"],
+            config=self.tasks_config["process_input"],
+            agent=self.input_processing_agent()
         )
 
     @crew
     def crew(self) -> Crew:
         """Creates the Research Crew"""
-        # To learn how to add knowledge sources to your crew, check out the documentation:
-        # https://docs.crewai.com/concepts/knowledge#what-is-knowledge
-
+        
         return Crew(
-            agents=self.agents,  # Automatically created by the @agent decorator
-            tasks=self.tasks,  # Automatically created by the @task decorator
+            agents=self.agents,
+            tasks=self.tasks,
             process=Process.sequential,
             verbose=True,
         )
