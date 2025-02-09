@@ -1,17 +1,17 @@
 import os
-
+from dotenv import load_dotenv
 from crewai import Agent, Crew, Process, Task, LLM
 from crewai.project import CrewBase, agent, crew, task
 from crewai.tasks import TaskOutput
 
-from shared_utils.model_utils import get_model_identifier, get_model_api_key
-
+from python_api.bot_flow.src.bot_flow.shared_utils.model_utils import get_model_identifier, get_model_api_key
 from crewai_tools import SpiderTool
+from python_api.bot_flow.src.bot_flow.types.types import SimpleSection
 
-from news_commentary.src.news_commentary.types.types import SimpleSection
-
+load_dotenv()
 spider_tool = SpiderTool(
-    custom_params={"depth": 2, "anti_bot": True, "proxy_enabled": True, "stealth": True}
+    custom_params={"depth": 2, "anti_bot": True, "proxy_enabled": True, "stealth": True},
+    api_key=os.getenv("SPIDER_API_KEY"),
 )
 
 @CrewBase
