@@ -41,7 +41,7 @@ class BusinessKnowledgeCrew:
     def provide_business_answer_task(self) -> Task:
         return Task(
             config=self.tasks_config["provide_business_answer"],
-            agent=self.input_processing_agent()
+            agent=self.business_knowledge_agent()
         )
 
     @crew
