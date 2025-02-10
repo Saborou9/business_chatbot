@@ -75,7 +75,6 @@ class BuddyFlow(Flow[BuddyState]):
                 'question': self.state.question
             })
         )
-        self.update_token_usage("input_processing", result.token_usage)
         self.state.input_details = result.pydantic
         self.utils.save_step_result_to_file(self.directory, "process_input", self.state, format="pydantic")
 
@@ -96,7 +95,6 @@ class BuddyFlow(Flow[BuddyState]):
                 "search_results_parsed": self.search_results_parsed
             })
         )
-        self.update_token_usage("search", result.token_usage)
         self.state.search_results_links = result.pydantic
         self.utils.save_step_result_to_file(self.directory, "search_google", self.state.search_results_links, format="pydantic")
 
@@ -128,7 +126,6 @@ class BuddyFlow(Flow[BuddyState]):
                 .crew()
                 .kickoff(inputs=inputs)
             )
-            self.update_token_usage("scrape", result.token_usage)
             self.state.raw_outlines.sections.append(result.pydantic)
             input_idx += 1
 
@@ -154,7 +151,6 @@ class BuddyFlow(Flow[BuddyState]):
                 "raw_outlines": self.state.raw_outlines
             })
         )
-        self.update_token_usage("business_knowledge", result.token_usage)
         self.state.full_outlines = result.pydantic
         self.utils.save_step_result_to_file(self.directory, "business_knowledge", self.state.full_outlines, format="pydantic")
 
@@ -171,7 +167,6 @@ class BuddyFlow(Flow[BuddyState]):
                 "full_outlines": self.state.full_outlines
             })
         )
-        self.update_token_usage("fact_checking", result.token_usage)
         self.state.full_outlines = result.pydantic
         self.utils.save_step_result_to_file(self.directory, "fact_checking", self.state.full_outlines, format="pydantic")
 
@@ -188,7 +183,6 @@ class BuddyFlow(Flow[BuddyState]):
                 "full_outlines": self.state.full_outlines
             })
         )
-        self.update_token_usage("legal", result.token_usage)
         self.state.full_outlines = result.pydantic
         self.utils.save_step_result_to_file(self.directory, "legal", self.state.full_outlines, format="pydantic")
 
@@ -205,7 +199,6 @@ class BuddyFlow(Flow[BuddyState]):
                 "full_outlines": self.state.full_outlines
             })
         )
-        self.update_token_usage("response", result.token_usage)
         self.state.response = result.pydantic
         self.utils.save_step_result_to_file(self.directory, "response", self.state.response, format="pydantic")
 
