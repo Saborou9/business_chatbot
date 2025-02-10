@@ -52,21 +52,12 @@ class SearchCrew:
     @task
     def search_task(self) -> Task:
         from datetime import datetime
-        
-        # Prepare the task configuration by formatting the description
-        task_config = self.tasks_config["search_task"]
-        formatted_description = task_config.replace("{current_date}", datetime.now().strftime("%Y-%m-%d")) \
-                                           .replace("{topic}", self.topic) \
-                                           .replace("{search_results_parsed}", str(self.search_results_parsed))
-        
-        # Create a new task configuration dictionary with the formatted description
-        formatted_task_config = {
-            **task_config,
-            "description": formatted_description
-        }
-
         return Task(
-            config=formatted_task_config,
+            config=self.tasks_config["search_task"].format(
+                current_date=datetime.now().strftime("%Y-%m-%d"),
+                topic=self.topic,
+                search_results_parsed=self.search_results_parsed
+            ),
             agent=self.search_agent(),
             output_pydantic=SearchResults
         )
