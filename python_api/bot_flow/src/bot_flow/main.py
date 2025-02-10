@@ -40,7 +40,12 @@ class BuddyFlow(Flow[BuddyState]):
         search_results_parsed: int,
         model_name: str,
     ):
+        # Initialize the state before calling the parent's __init__
+        self.state = BuddyState(question=question)
+        
+        # Then call the parent's __init__
         super().__init__()
+        
         self.show_logs = show_logs
         self.directory = (f"output/{directory}")
         self.search_timeframe = search_timeframe
@@ -59,9 +64,6 @@ class BuddyFlow(Flow[BuddyState]):
         # create scraped subdirectory in output directory
         if not os.path.exists(f"{self.directory}/scraped"):
             os.makedirs(f"{self.directory}/scraped")
-        
-        # Set the question in the state
-        self.state = BuddyState(question=question)
 
     @start()
     def process_input(self):
@@ -93,7 +95,7 @@ class BuddyFlow(Flow[BuddyState]):
             .crew()
             .kickoff(inputs={
                 "current_date": self.current_date,
-                "topic": self.topic,
+                "topic": self.state.question,  # Use the question as the topic
                 "search_results_parsed": self.search_results_parsed
             })
         )
