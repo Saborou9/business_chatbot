@@ -47,11 +47,16 @@ class SearchCrew:
 
     @task
     def search_task(self) -> Task:
+        from datetime import datetime
         return Task(
-            config=self.tasks_config["search_task"],
+            config=self.tasks_config["search_task"].format(
+                current_date=datetime.now().strftime("%Y-%m-%d"),
+                topic=self.topic,
+                search_results_parsed=self.search_results_parsed
+            ),
             agent=self.search_agent(),
             output_pydantic=SearchResults
-    )
+        )
 
     @crew
     def crew(self) -> Crew:

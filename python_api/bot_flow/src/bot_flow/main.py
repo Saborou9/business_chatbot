@@ -86,12 +86,14 @@ class BuddyFlow(Flow[BuddyState]):
                 show_logs=self.show_logs,
                 search_timeframe=self.search_timeframe,
                 search_results=self.search_results,
-                model_name=self.model_name
+                model_name=self.model_name,
+                topic=self.state.question,  # Pass the question as topic
+                search_results_parsed=self.search_results_parsed
             )
             .crew()
             .kickoff(inputs={
                 "current_date": self.current_date,
-                "topic": self.state.question,  # Use the question as the topic
+                "topic": self.state.question,
                 "search_results_parsed": self.search_results_parsed
             })
         )
