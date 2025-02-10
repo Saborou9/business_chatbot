@@ -4,9 +4,9 @@ from crewai import Agent, Crew, Process, Task, LLM
 from crewai.project import CrewBase, agent, crew, task
 from crewai.tasks import TaskOutput
 
-from python_api.bot_flow.src.bot_flow.shared_utils.model_utils import get_model_identifier, get_model_api_key
+from src.bot_flow.shared_utils.model_utils import get_model_identifier, get_model_api_key
 from crewai_tools import SpiderTool
-from python_api.bot_flow.src.bot_flow.types.types import SimpleSection
+from src.bot_flow.types.types import SimpleSection
 
 load_dotenv()
 spider_tool = SpiderTool(
