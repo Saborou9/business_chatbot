@@ -40,11 +40,8 @@ class BuddyFlow(Flow[BuddyState]):
         search_results_parsed: int,
         model_name: str,
     ):
-        # Initialize the state before calling the parent's __init__
-        self.state = BuddyState(question=question)
-        
-        # Then call the parent's __init__
-        super().__init__()
+        # Initialize with the state
+        super().__init__(state=BuddyState(question=question))
         
         self.show_logs = show_logs
         self.directory = (f"output/{directory}")
