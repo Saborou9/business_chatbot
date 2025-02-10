@@ -6,16 +6,16 @@ from random import randint
 from pydantic import BaseModel
 from crewai.flow import Flow, listen, start, router, or_
 
-from bot_flow.types.types import SearchResults, SimpleOutline, FullSection, FullOutline
-from bot_flow.shared_utils.flow_utils import FlowUtils
+from types.types import SearchResults, SimpleOutline, FullSection, FullOutline
+from shared_utils.flow_utils import FlowUtils
 
-from bot_flow.crews.input_processing_crew import InputProcessingCrew
-from bot_flow.crews.business_knowledge_crew import BusinessKnowledgeCrew
-from bot_flow.crews.fact_checking_crew import FactCheckingCrew
-from bot_flow.crews.legal_crew import LegalCrew
-from bot_flow.crews.response_crew import ResponseCrew
-from bot_flow.crews.scrape_crew import ScrapeCrew
-from bot_flow.crews.search_crew import SearchCrew
+from crews.input_processing_crew import InputProcessingCrew
+from crews.business_knowledge_crew import BusinessKnowledgeCrew
+from crews.fact_checking_crew import FactCheckingCrew
+from crews.legal_crew import LegalCrew
+from crews.response_crew import ResponseCrew
+from crews.scrape_crew import ScrapeCrew
+from crews.search_crew import SearchCrew
 
 
 class BuddyState(BaseModel):

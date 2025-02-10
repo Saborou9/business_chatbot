@@ -1,8 +1,4 @@
-from bot_flow.src.bot_flow.main import BuddyFlow
-
-inputs = {
-    
-}
+from src.bot_flow.main import BuddyFlow
 
 BuddyFlow(
     question="What are the latest trends in AI for small businesses?",
