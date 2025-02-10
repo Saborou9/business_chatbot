@@ -17,11 +17,15 @@ class SearchCrew:
         search_timeframe: str = "d",
         search_results: int = 10,
         model_name: str = "4o-mini",
+        topic: str = "",  # Add this parameter
+        search_results_parsed: int = 2,  # Add this parameter
 	):
         self.show_logs = show_logs
         self.search_timeframe = search_timeframe
         self.search_results = search_results
         self.model_name = model_name
+        self.topic = topic  # Store the topic
+        self.search_results_parsed = search_results_parsed
 
     agents_config = "config/agents.yaml"
     tasks_config = "config/tasks.yaml"
