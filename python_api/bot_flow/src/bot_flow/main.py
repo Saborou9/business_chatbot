@@ -6,7 +6,7 @@ from random import randint
 from pydantic import BaseModel
 from crewai.flow import Flow, listen, start, router, or_
 
-from src.bot_flow.types.types import SearchResults, SimpleOutline, FullSection, FullOutline
+from src.bot_flow.types.types import SearchResults, SimpleOutline, FullSection, FullOutline, SearchResult
 from src.bot_flow.shared_utils.flow_utils import FlowUtils
 
 from src.bot_flow.crews.input_processing_crew.input_processing_crew import InputProcessingCrew
@@ -21,10 +21,10 @@ from src.bot_flow.crews.search_crew.search_crew import SearchCrew
 class BuddyState(BaseModel):
     question: str = ""
     input_details: dict = {}
-    search_results_links: SearchResults = None
-    raw_outlines: SimpleOutline = None
+    search_results_links: SearchResults = SearchResults(search_results=[])
+    raw_outlines: SimpleOutline = SimpleOutline(sections=[])
     parsed_webpages: List[str] = []
-    full_outlines: FullOutline = None
+    full_outlines: FullOutline = FullOutline(sections=[])
     response: str = ""
 
 
