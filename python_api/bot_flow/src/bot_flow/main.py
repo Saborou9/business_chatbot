@@ -78,7 +78,21 @@ class BuddyFlow(Flow[BuddyState]):
         self.state.input_details = result.pydantic
         self.utils.save_step_result_to_file(self.directory, "process_input", self.state, format="pydantic")
 
-    @listen(process_input)
+    @router(process_input)
+    def route_to_crew(self):
+        intent = self.state.input_details.get('intent_classification', '')
+        
+        if intent == 'market_research':
+            return self.search_google
+        elif intent == 'business_knowledge':
+            return self.business_knowledge
+        elif intent == 'legal':
+            return self.legal
+        else:
+            # Default fallback
+            print("No clear intent detected. Defaulting to search.")
+            return self.search_google
+
     def search_google(self):
         print("Searching Google")
         result = (
@@ -100,7 +114,7 @@ class BuddyFlow(Flow[BuddyState]):
         self.state.search_results_links = result.pydantic
         self.utils.save_step_result_to_file(self.directory, "search_google", self.state.search_results_links, format="pydantic")
 
-    @listen(search_google)
+    @listen(route_to_crew)
     def parse_results(self):
         print("Parsing results")
         
