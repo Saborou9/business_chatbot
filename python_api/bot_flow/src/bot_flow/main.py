@@ -75,19 +75,31 @@ class BuddyFlow(Flow[BuddyState]):
                 'question': self.state.question
             })
         )
-        self.state.input_details = result.pydantic
-        self.utils.save_step_result_to_file(self.directory, "process_input", self.state, format="pydantic")
+        
+        # Add error handling and logging
+        if result and result.pydantic:
+            self.state.input_details = result.pydantic
+            self.utils.save_step_result_to_file(self.directory, "process_input", self.state, format="pydantic")
+        else:
+            print("Error: Input processing crew returned no result")
+            # Set a default intent to prevent NoneType error
+            self.state.input_details = {'intent_classification': 'market_research'}
 
     @router(process_input)
     def route_to_crew(self):
-        intent = self.state.input_details.get('intent_classification', '')
+        # Add additional safety checks
+        if not hasattr(self.state, 'input_details') or self.state.input_details is None:
+            print("No input details found. Defaulting to market research.")
+            intent = 'market_research'
+        else:
+            intent = self.state.input_details.get('intent_classification', 'market_research')
         
         if intent == 'market_research':
-            return "search_google_intent"
+            return self.search_google
         elif intent == 'business_knowledge':
-            return "business_knowledge_intent"
+            return self.business_knowledge
         elif intent == 'legal':
-            return "legal_intent"
+            return self.legal
         else:
             # Default fallback
             print("No clear intent detected. Defaulting to search.")
