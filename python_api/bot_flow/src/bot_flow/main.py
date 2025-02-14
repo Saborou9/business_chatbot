@@ -83,17 +83,17 @@ class BuddyFlow(Flow[BuddyState]):
         intent = self.state.input_details.get('intent_classification', '')
         
         if intent == 'market_research':
-            return self.search_google
+            return "search_google_intent"
         elif intent == 'business_knowledge':
-            return self.business_knowledge
+            return "business_knowledge_intent"
         elif intent == 'legal':
-            return self.legal
+            return "legal_intent"
         else:
             # Default fallback
             print("No clear intent detected. Defaulting to search.")
             return self.search_google
 
-    @listen(route_to_crew)
+    @listen("search_google_intent")
     def search_google(self):
         print("Searching Google")
         result = (
@@ -155,7 +155,7 @@ class BuddyFlow(Flow[BuddyState]):
 
         self.utils.save_step_result_to_file(self.directory, "parse_results", self.state.raw_outlines, format="pydantic")
 
-    @listen(route_to_crew)
+    @listen("business_knowledge_intent")
     def business_knowledge(self):
         print("Extracting business knowledge")
         result = (
@@ -171,23 +171,8 @@ class BuddyFlow(Flow[BuddyState]):
         self.state.full_outlines = result.pydantic
         self.utils.save_step_result_to_file(self.directory, "business_knowledge", self.state.full_outlines, format="pydantic")
 
-    @listen(business_knowledge)
-    def fact_checking(self):
-        print("Fact checking")
-        result = (
-            FactCheckingCrew(
-                show_logs=self.show_logs,
-                model_name=self.model_name
-            )
-            .crew()
-            .kickoff(inputs={
-                "full_outlines": self.state.full_outlines
-            })
-        )
-        self.state.full_outlines = result.pydantic
-        self.utils.save_step_result_to_file(self.directory, "fact_checking", self.state.full_outlines, format="pydantic")
 
-    @listen(route_to_crew)
+    @listen("legal_intent")
     def legal(self):
         print("Legal")
         result = (
@@ -203,7 +188,23 @@ class BuddyFlow(Flow[BuddyState]):
         self.state.full_outlines = result.pydantic
         self.utils.save_step_result_to_file(self.directory, "legal", self.state.full_outlines, format="pydantic")
 
-    @listen(legal)
+    @listen(or_(business_knowledge, legal))
+    def fact_checking(self):
+        print("Fact checking")
+        result = (
+            FactCheckingCrew(
+                show_logs=self.show_logs,
+                model_name=self.model_name
+            )
+            .crew()
+            .kickoff(inputs={
+                "full_outlines": self.state.full_outlines
+            })
+        )
+        self.state.full_outlines = result.pydantic
+        self.utils.save_step_result_to_file(self.directory, "fact_checking", self.state.full_outlines, format="pydantic")
+
+    @listen(or_(parse_results, business_knowledge, legal))
     def response(self):
         print("Generating response")
         result = (
@@ -223,11 +224,9 @@ def kickoff():
     buddy_flow = BuddyFlow()
     buddy_flow.kickoff()
 
-
 def plot():
     buddy_flow = BuddyFlow()
     buddy_flow.plot()
-
 
 if __name__ == "__main__":
     kickoff()
