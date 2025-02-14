@@ -93,6 +93,7 @@ class BuddyFlow(Flow[BuddyState]):
             print("No clear intent detected. Defaulting to search.")
             return self.search_google
 
+    @listen(route_to_crew)
     def search_google(self):
         print("Searching Google")
         result = (
@@ -114,7 +115,7 @@ class BuddyFlow(Flow[BuddyState]):
         self.state.search_results_links = result.pydantic
         self.utils.save_step_result_to_file(self.directory, "search_google", self.state.search_results_links, format="pydantic")
 
-    @listen(route_to_crew)
+    @listen(search_google)
     def parse_results(self):
         print("Parsing results")
         
@@ -154,7 +155,7 @@ class BuddyFlow(Flow[BuddyState]):
 
         self.utils.save_step_result_to_file(self.directory, "parse_results", self.state.raw_outlines, format="pydantic")
 
-    @listen(parse_results)
+    @listen(route_to_crew)
     def business_knowledge(self):
         print("Extracting business knowledge")
         result = (
@@ -186,7 +187,7 @@ class BuddyFlow(Flow[BuddyState]):
         self.state.full_outlines = result.pydantic
         self.utils.save_step_result_to_file(self.directory, "fact_checking", self.state.full_outlines, format="pydantic")
 
-    @listen(fact_checking)
+    @listen(route_to_crew)
     def legal(self):
         print("Legal")
         result = (
