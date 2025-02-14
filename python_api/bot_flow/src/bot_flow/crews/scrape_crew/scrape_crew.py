@@ -65,58 +65,6 @@ class ScrapeCrew:
             max_retries=2,
             callback=self.save_web_content
         )
-    
-    @agent
-    def content_summarizer(self) -> Agent:
-        return Agent(
-            config=self.agents_config["content_summarizer"],
-            tools=[spider_tool],
-            llm=LLM(
-                model=get_model_identifier(self.model_name),
-                api_key=os.getenv(get_model_api_key(self.model_name)),
-                max_tokens=2048,
-                temperature=0.4,
-                top_p=0.75,
-                presence_penalty=0.3,
-                frequency_penalty=0.5,
-            ),
-            verbose=self.show_logs,
-            cache=False
-        )
-
-    @task
-    def content_summary_task(self) -> Task:
-        return Task(
-            config=self.tasks_config['content_summary_task'],
-            agent=self.content_summarizer(),
-            max_retries=2
-        )
-    
-    @agent
-    def expert_podcast_outline_writer(self) -> Agent:
-        return Agent(
-            config=self.agents_config['expert_podcast_outline_writer'],
-            llm=LLM(
-                model=get_model_identifier(self.model_name),
-                api_key=os.getenv(get_model_api_key(self.model_name)),
-                max_tokens=2048,
-                temperature=0.4,
-                top_p=0.8,
-                presence_penalty=0.4,
-                frequency_penalty=0.4,
-            ),
-            verbose=self.show_logs,
-            cache=False,
-        )
-
-    @task
-    def generate_section_from_summary_task(self) -> Task:
-        return Task(
-            config=self.tasks_config['generate_section_from_summary_task'],
-            agent=self.expert_podcast_outline_writer(),
-            context=[self.content_summary_task()],
-            output_pydantic=SimpleSection,
-        )
 
     @crew
     def crew(self) -> Crew:
