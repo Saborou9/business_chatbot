@@ -41,5 +41,5 @@ yarn.lock
 
 # python api
 /python_api/bot_env/
-/python_api/bot_flow/.test
+/python_api/bot_flow/test.py
 /python_api/bot_flow/output/
