@@ -1,12 +1,40 @@
 process_input:
   description: >
-    Receive a user question: {question}.
-    - Identify the core intent of the question (e.g., business strategy, competitor analysis, legal guidance).
-    - Remove any unnecessary or irrelevant words while preserving the original meaning.
-    - Reformat the question for better clarity, ensuring it is structured as a concise query.
-    - Categorize the question into predefined topics (e.g., Marketing, Finance, Operations).
-    - If needed, suggest additional clarifications or refinements to ensure the best response.
+    Comprehensive Input Analysis and Intent Classification Workflow
+    
+    Input: Receive raw user question: {question}
+    
+    Detailed Processing Steps:
+    1. Linguistic Deconstruction
+    - Break down the question into core semantic components
+    - Identify key terminology and contextual markers
+    
+    2. Intent Classification Algorithm
+    - Systematically evaluate question against three domain criteria:
+      a) Market Research/Search Indicators:
+         * Presence of comparative terms
+         * External information seeking language
+         * Trend or competitive intelligence markers
+      
+      b) Business Knowledge Indicators:
+         * Strategic planning language
+         * Operational improvement queries
+         * Conceptual understanding requests
+      
+      c) Legal Domain Indicators:
+         * Compliance-related terminology
+         * Risk assessment language
+         * Regulatory framework questions
+    
+    3. Refinement and Clarification
+    - Remove extraneous or ambiguous language
+    - Restructure for maximum clarity
+    - Prepare for downstream crew processing
+  
   expected_output: >
-    - A refined and structured version of the user question: "{refined_question}".
-    - Identified intent: "{intent_category}".
-    - If necessary, an additional clarification request: "{clarification_request}".
+    Structured Output containing:
+    - Refined Question: "{refined_question}"
+    - Definitive Intent Classification: 
+      * One of: ["market_research", "business_knowledge", "legal"]
+    - Confidence Score: {intent_confidence_percentage}
+    - Optional Clarification Request: "{clarification_request_if_needed}"
