@@ -42,7 +42,14 @@ class InputProcessingCrew:
     def process_input_task(self) -> Task:
         return Task(
             config=self.tasks_config["process_input"],
-            agent=self.input_processing_agent()
+            agent=self.input_processing_agent(),
+            output_json=True,
+            expected_output={
+                "intent_classification": str,
+                "refined_question": str,
+                "intent_confidence_percentage": int,
+                "clarification_request_if_needed": str
+            }
         )
 
     @crew
