@@ -1,40 +1,9 @@
 process_input:
   description: >
-    Comprehensive Input Analysis and Intent Classification Workflow
+    Analyze the user's input and classify its intent.
     
-    Input: Receive raw user question: {question}
-    
-    Detailed Processing Steps:
-    1. Linguistic Deconstruction
-    - Break down the question into core semantic components
-    - Identify key terminology and contextual markers
-    
-    2. Intent Classification Algorithm
-    - Systematically evaluate question against three domain criteria:
-      a) Market Research/Search Indicators:
-         * Presence of comparative terms
-         * External information seeking language
-         * Trend or competitive intelligence markers
-      
-      b) Business Knowledge Indicators:
-         * Strategic planning language
-         * Operational improvement queries
-         * Conceptual understanding requests
-      
-      c) Legal Domain Indicators:
-         * Compliance-related terminology
-         * Risk assessment language
-         * Regulatory framework questions
-    
-    3. Refinement and Clarification
-    - Remove extraneous or ambiguous language
-    - Restructure for maximum clarity
-    - Prepare for downstream crew processing
-  
-  expected_output: >
-    Structured Output containing:
-    - Refined Question: "{refined_question}"
-    - Definitive Intent Classification: 
-      * One of: ["market_research", "business_knowledge", "legal"]
-    - Confidence Score: {intent_confidence_percentage}
-    - Optional Clarification Request: "{clarification_request_if_needed}"
+    REQUIRED OUTPUT:
+    1. intent_classification: One of "market_research", "business_knowledge", or "legal"
+    2. refined_question: A clear, concise version of the original question
+    3. intent_confidence_percentage: Numerical confidence score (0-100)
+    4. clarification_request_if_needed: Any needed clarification
