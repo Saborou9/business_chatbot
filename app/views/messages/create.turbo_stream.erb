@@ -11,9 +11,9 @@
   <%= render 'messages/form', chat: @chat, message: Message.new, message_disabled: true %>
 <% end %>
 
-<%= turbo_stream.update "bot_response_placeholder" do %>
+<%= turbo_stream.append "messages" do %>
   <div class="flex justify-start w-full">
-    <div class="bg-green-500 text-white p-2 rounded-md max-w-[70%] animate-pulse">
+    <div class="bg-green-500 text-white p-2 rounded-md max-w-[70%]">
       <p class="text-sm">Generating response...</p>
     </div>
   </div>
