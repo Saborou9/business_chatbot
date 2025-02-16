@@ -53,6 +53,6 @@ class ChatsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def chat_params
-      params.require(:chat).permit(:title)
+      params.require(:chat).permit(:title, :preferred_model)
     end
 end
