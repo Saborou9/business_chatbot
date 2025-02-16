@@ -95,12 +95,7 @@ class BuddyFlow(Flow[BuddyState]):
 
     @router(process_input)
     def route_to_crew(self):
-        # Add additional safety checks
-        if not hasattr(self.state, 'input_details') or self.state.input_details is None:
-            print("No input details found. Defaulting to market research.")
-            intent = 'market_research'
-        else:
-            intent = self.state.input_details.get('intent_classification', 'market_research')
+        intent = self.state.input_details.get('intent_classification', '')
         
         if intent == 'market_research':
             return self.search_google
