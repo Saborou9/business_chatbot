@@ -1,6 +1,6 @@
 class ChatsController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_chat, only: %i[ show destroy ]
+  before_action :set_chat, only: %i[ show destroy update_preferred_model ]
 
   # GET /chats or /chats.json
   def index
@@ -42,6 +42,14 @@ class ChatsController < ApplicationController
     respond_to do |format|
       format.html { redirect_to chats_path, status: :see_other, notice: "Chat was successfully destroyed." }
       format.json { head :no_content }
+    end
+  end
+
+  def update_preferred_model
+    if @chat.update(preferred_model: params[:preferred_model])
+      redirect_to @chat, notice: 'Model preference updated.'
+    else
+      redirect_to @chat, alert: 'Failed to update model preference.'
     end
   end
 

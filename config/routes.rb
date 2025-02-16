@@ -7,6 +7,9 @@ Rails.application.routes.draw do
     }
   resources :chats, except: [ :edit, :update ] do
     resources :messages, only: [:create]
+    member do
+      patch :update_preferred_model
+    end
   end
   get "/about", to: "pages#about", as: :about
   get "/pricing", to: "pages#pricing", as: :pricing
