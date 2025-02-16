@@ -22,6 +22,8 @@ class BuddyState(BaseModel):
     question: str = ""
     input_details: InputProcessingOutput = InputProcessingOutput()
     search_results: SearchOutput = SearchOutput()
+    search_results_links: SearchOutput = SearchOutput()
+    parsed_webpages: List[str] = []
     business_knowledge: BusinessKnowledgeOutput = BusinessKnowledgeOutput()
     legal_analysis: LegalOutput = LegalOutput()
     fact_checked_info: FactCheckingOutput = FactCheckingOutput()
@@ -120,8 +122,15 @@ class BuddyFlow(Flow[BuddyState]):
                 "search_results_parsed": self.search_results_parsed
             })
         )
-        self.state.search_results_links = result.pydantic
-        self.utils.save_step_result_to_file(self.directory, "search_google", self.state.search_results_links, format="pydantic")
+        
+        # Add error checking
+        if result and result.pydantic:
+            self.state.search_results_links = result.pydantic
+            self.utils.save_step_result_to_file(self.directory, "search_google", self.state.search_results_links, format="pydantic")
+        else:
+            print("Error: Search crew returned no results")
+            # Optionally, set a default or handle the error
+            self.state.search_results_links = SearchOutput()
 
     @listen(search_google)
     def parse_results(self):
