@@ -95,20 +95,22 @@ class BuddyFlow(Flow[BuddyState]):
 
     @router(process_input)
     def route_to_crew(self):
-        intent = self.state.input_details.intent_classification
+        print(f"Routing based on intent: {self.state.input_details.intent_classification}")
         
-        if intent == 'market_research':
+        if self.state.input_details.intent_classification == 'market_research':
+            print("Routing to search_google")
             return self.search_google
-        elif intent == 'business_knowledge':
+        elif self.state.input_details.intent_classification == 'business_knowledge':
+            print("Routing to business_knowledge")
             return self.business_knowledge
-        elif intent == 'legal':
+        elif self.state.input_details.intent_classification == 'legal':
+            print("Routing to legal")
             return self.legal
         else:
-            # Default fallback
             print("No clear intent detected. Defaulting to search.")
             return self.search_google
 
-    @listen("search_google_intent")
+    @listen(route_to_crew)
     def search_google(self):
         print("Searching Google")
         result = (
@@ -169,7 +171,7 @@ class BuddyFlow(Flow[BuddyState]):
 
         self.utils.save_step_result_to_file(self.directory, "parse_results", self.state.raw_outlines, format="pydantic")
 
-    @listen("business_knowledge_intent")
+    @listen(route_to_crew)
     def business_knowledge(self):
         print("Extracting business knowledge")
         result = (
@@ -186,7 +188,7 @@ class BuddyFlow(Flow[BuddyState]):
         self.utils.save_step_result_to_file(self.directory, "business_knowledge", self.state.full_outlines, format="pydantic")
 
 
-    @listen("legal_intent")
+    @listen(route_to_crew)
     def legal(self):
         print("Legal")
         result = (
@@ -234,8 +236,24 @@ class BuddyFlow(Flow[BuddyState]):
         self.state.response = result.pydantic
         self.utils.save_step_result_to_file(self.directory, "response", self.state.response, format="pydantic")
 
-def kickoff():
-    buddy_flow = BuddyFlow()
+def kickoff(
+    question="Default question", 
+    show_logs=True, 
+    directory="default_output", 
+    search_timeframe="d", 
+    search_results=5, 
+    search_results_parsed=2, 
+    model_name="4o-mini"
+):
+    buddy_flow = BuddyFlow(
+        question=question,
+        show_logs=show_logs,
+        directory=directory,
+        search_timeframe=search_timeframe,
+        search_results=search_results,
+        search_results_parsed=search_results_parsed,
+        model_name=model_name
+    )
     buddy_flow.kickoff()
 
 def plot():
