@@ -6,7 +6,7 @@ from random import randint
 from pydantic import BaseModel
 from crewai.flow import Flow, listen, start, router, or_
 
-from src.bot_flow.types.types import SearchResults, SimpleOutline, FullSection, FullOutline, SearchResult, InputProcessingOutput
+from src.bot_flow.types.types import SearchResults, SearchResult, InputProcessingOutput
 from src.bot_flow.shared_utils.flow_utils import FlowUtils
 
 from src.bot_flow.crews.input_processing_crew.input_processing_crew import InputProcessingCrew
@@ -22,9 +22,7 @@ class BuddyState(BaseModel):
     question: str = ""
     input_details: dict = {}
     search_results_links: SearchResults = SearchResults(search_results=[])
-    raw_outlines: SimpleOutline = SimpleOutline(sections=[])
     parsed_webpages: List[str] = []
-    full_outlines: FullOutline = FullOutline(sections=[])
     response: str = ""
 
 
@@ -159,7 +157,6 @@ class BuddyFlow(Flow[BuddyState]):
                 .crew()
                 .kickoff(inputs=inputs)
             )
-            self.state.raw_outlines.sections.append(result.pydantic)
             input_idx += 1
 
         # Load all webpages content into a state variable
