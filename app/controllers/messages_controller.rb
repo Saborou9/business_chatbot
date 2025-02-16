@@ -12,7 +12,7 @@ class MessagesController < ApplicationController
         bot_response = generate_bot_response(@message)
 
         format.turbo_stream
-        format.html { render partial: 'messages/message', locals: { message: @message }, status: :ok }
+        format.html { render partial: "messages/message", locals: { message: @message }, status: :ok }
       else
         format.turbo_stream { render turbo_stream: turbo_stream.replace("new_message", partial: "messages/form", locals: { chat: @chat, message: @message }) }
         format.html { render "chats/show", status: :unprocessable_entity }
@@ -35,7 +35,7 @@ class MessagesController < ApplicationController
     # This is just a placeholder
     bot_response = @chat.messages.create(
       context: "This is a bot response to: #{message.context}",
-      user: User.find_by(email: 'bot@example.com')
+      user: User.find_by(email: "bot@example.com")
     )
     bot_response
   end
