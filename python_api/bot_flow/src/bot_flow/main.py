@@ -223,18 +223,55 @@ class BuddyFlow(Flow[BuddyState]):
     @listen(or_(parse_results, business_knowledge, legal))
     def response(self):
         print("Generating response")
+        
+        # Prepare base inputs that are always included
+        inputs = {
+            "input_details": {
+                "intent_classification": self.state.input_details.intent_classification,
+                "refined_question": self.state.input_details.refined_question,
+                "intent_confidence_percentage": self.state.input_details.intent_confidence_percentage,
+                "clarification_request_if_needed": self.state.input_details.clarification_request_if_needed
+            }
+        }
+
+        # Conditionally add search results for market research
+        if self.state.input_details.intent_classification == "market_research":
+            inputs["search_results"] = {
+                "search_results": [
+                    {"title": result.title, "link": result.link} 
+                    for result in self.state.search_results.search_results
+                ]
+            }
+            inputs["parsed_webpages"] = self.state.parsed_webpages
+        
+        # Conditionally add business knowledge
+        if self.state.input_details.intent_classification == "business_knowledge":
+            inputs["business_knowledge"] = {
+                "insights": self.state.business_knowledge.insights
+            }
+        
+        # Conditionally add legal analysis
+        if self.state.input_details.intent_classification == "legal":
+            inputs["legal_analysis"] = {
+                "legal_analysis": self.state.legal_analysis.legal_analysis
+            }
+        
+        # Always include fact-checking if available
+        if self.state.fact_checked_info.verified_information:
+            inputs["fact_checked_info"] = {
+                "verified_information": self.state.fact_checked_info.verified_information
+            }
+
+        # Kickoff the response crew with conditional inputs
         result = (
             ResponseCrew(
                 show_logs=self.show_logs,
                 model_name=self.model_name
             )
             .crew()
-            .kickoff(inputs={
-                "search_results": self.state.search_results,
-                "business_knowledge": self.state.business_knowledge,
-                "legal_analysis": self.state.legal_analysis,
-            })
+            .kickoff(inputs=inputs)
         )
+
         self.state.response = result.pydantic
         self.utils.save_step_result_to_file(self.directory, "response", self.state.response, format="pydantic")
 
