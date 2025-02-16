@@ -4,7 +4,7 @@ from crewai import Agent, Crew, Process, Task, LLM
 from crewai.project import CrewBase, agent, crew, task
 
 from src.bot_flow.shared_utils.model_utils import get_model_identifier, get_model_api_key
-from src.bot_flow.types.types import SearchResults
+from src.bot_flow.types.types import SearchOutput
 from src.bot_flow.tools.serper_dev_tool import SerperDevTool
 
 @CrewBase
@@ -66,7 +66,7 @@ class SearchCrew:
         return Task(
             config=task_config,
             agent=self.search_agent(),
-            output_pydantic=SearchResults
+            output_pydantic=SearchOutput
         )
 
     @crew

@@ -6,16 +6,7 @@ from random import randint
 from pydantic import BaseModel
 from crewai.flow import Flow, listen, start, router, or_
 
-from src.bot_flow.types.types import (
-    SearchResults, 
-    SearchResult, 
-    InputProcessingOutput, 
-    SearchOutput, 
-    BusinessKnowledgeOutput, 
-    LegalOutput, 
-    FactCheckingOutput, 
-    ResponseOutput
-)
+from src.bot_flow.types.types import SearchResult, InputProcessingOutput, SearchOutput, BusinessKnowledgeOutput, LegalOutput, FactCheckingOutput, ResponseOutput
 from src.bot_flow.shared_utils.flow_utils import FlowUtils
 
 from src.bot_flow.crews.input_processing_crew.input_processing_crew import InputProcessingCrew

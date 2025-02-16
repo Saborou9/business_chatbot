@@ -1,6 +1,11 @@
 from typing import List, Optional
 from pydantic import BaseModel
 
+class SimpleSection(BaseModel):
+    title: str
+    description: str
+    key_talking_pints: str
+
 class SearchResult(BaseModel):
     title: str
     link: str
@@ -9,9 +14,9 @@ class SearchOutput(BaseModel):
     search_results: List[SearchResult] = []
 
 class InputProcessingOutput(BaseModel):
-    intent_classification: str  # One of 'market_research', 'business_knowledge', or 'legal'
+    intent_classification: str
     refined_question: str
-    intent_confidence_percentage: int  # 0-100
+    intent_confidence_percentage: int
     clarification_request_if_needed: str = ""
 
 class BusinessKnowledgeOutput(BaseModel):

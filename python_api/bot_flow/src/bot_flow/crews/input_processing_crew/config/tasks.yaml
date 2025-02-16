@@ -1,5 +1,5 @@
 process_input:
-  description: >
+   description: >
     Comprehensive Input Analysis and Intent Classification Workflow
 
      Input: Receive raw user question: {question}
@@ -31,7 +31,7 @@ process_input:
      - Restructure for maximum clarity
      - Prepare for downstream crew processing
     
-    REQUIRED OUTPUT:
+   expected_output: >
     1. intent_classification: One of "market_research", "business_knowledge", or "legal"
     2. refined_question: A clear, concise version of the original question
     3. intent_confidence_percentage: Numerical confidence score (0-100)

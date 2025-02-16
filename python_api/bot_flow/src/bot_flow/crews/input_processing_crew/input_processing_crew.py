@@ -43,9 +43,9 @@ class InputProcessingCrew:
     @task
     def process_input_task(self) -> Task:
         return Task(
+            config=self.tasks_config["process_input"],
             agent=self.input_processing_agent(),
-            expected_output=InputProcessingOutput.model_json_schema(),
-            output_json=True
+            output_pydantic=InputProcessingOutput
         )
 
     @crew
