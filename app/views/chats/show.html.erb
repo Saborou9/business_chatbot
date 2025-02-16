@@ -1,5 +1,23 @@
 <%= turbo_frame_tag "chat_content" do %>
   <div class="p-4 h-full flex flex-col">
+    <div class="flex justify-center mb-4">
+      <%= form_with(url: update_preferred_model_chat_path(@chat), method: :patch, local: true, class: "w-full max-w-xs") do |f| %>
+        <%= f.select :preferred_model, 
+            [
+              ['GPT-3.5', 'gpt-3.5-turbo'], 
+              ['GPT-4', 'gpt-4'], 
+              ['Claude Sonnet', 'claude-sonnet'], 
+              ['Claude Opus', 'claude-opus']
+            ], 
+            { selected: @chat.preferred_model || 'gpt-3.5-turbo' },
+            {
+              class: 'form-select block w-full mt-1 rounded-md border-gray-300 shadow-sm focus:border-green-300 focus:ring focus:ring-green-200 focus:ring-opacity-50 text-black',
+              onchange: 'this.form.submit()'
+            } 
+        %>
+      <% end %>
+    </div>
+
     <div class="flex-grow overflow-y-auto mb-4 space-y-2" id="messages">
       <% @chat.messages.order(:created_at).each do |message| %>
         <div class="flex <%= message.user == current_user ? 'justify-end' : 'justify-start' %> w-full">
