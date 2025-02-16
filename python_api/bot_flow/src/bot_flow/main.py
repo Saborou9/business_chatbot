@@ -272,8 +272,15 @@ class BuddyFlow(Flow[BuddyState]):
             .kickoff(inputs=inputs)
         )
 
-        self.state.response = result.pydantic
-        self.utils.save_step_result_to_file(self.directory, "response", self.state.response, format="pydantic")
+        # Add error handling
+        if result and hasattr(result, 'pydantic'):
+            self.state.response = result.pydantic
+            self.utils.save_step_result_to_file(self.directory, "response", self.state.response, format="pydantic")
+        else:
+            print("Error: Response crew returned no result")
+            # Set a default response
+            self.state.response = ResponseOutput(final_response="I apologize, but I couldn't generate a response at this time.")
+            self.utils.save_step_result_to_file(self.directory, "response", self.state.response, format="pydantic")
 
 def kickoff():
     buddy_flow = BuddyFlow()
