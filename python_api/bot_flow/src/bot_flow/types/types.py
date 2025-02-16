@@ -14,9 +14,9 @@ class SearchOutput(BaseModel):
     search_results: List[SearchResult] = []
 
 class InputProcessingOutput(BaseModel):
-    intent_classification: str
-    refined_question: str
-    intent_confidence_percentage: int
+    intent_classification: str = ""
+    refined_question: str = ""
+    intent_confidence_percentage: int = 0
     clarification_request_if_needed: str = ""
 
 class BusinessKnowledgeOutput(BaseModel):
