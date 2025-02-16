@@ -1,6 +1,6 @@
 from fastapi import FastAPI, HTTPException
 import subprocess
-from src.bot_flow.main import BuddyFlow
+from bot_flow.src.bot_flow.main import BuddyFlow
 import os
 from datetime import datetime
 
