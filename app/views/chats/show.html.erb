@@ -1,41 +1,61 @@
 <%= turbo_frame_tag "chat_content" do %>
   <div class="p-4 h-full flex flex-col">
-    <h1 class="font-bold text-2xl mb-4"><%= @chat.title %></h1>
+    <div class="flex h-full">
+      <!-- User Messages Column -->
+      <div class="w-1/2 pr-2 flex flex-col">
+        <h1 class="font-bold text-2xl mb-4">Your Messages</h1>
 
-    <div id="messages" class="flex-grow overflow-y-auto mb-4 space-y-2">
-      <% @chat.messages.order(:created_at).each do |message| %>
-        <div class="bg-gray-100 p-2 rounded-md">
-          <p class="text-sm text-gray-700"><%= message.context %></p>
-          <small class="text-xs text-gray-500"><%= message.user.email %> at <%= message.created_at.strftime("%H:%M") %></small>
+        <div id="user_messages" class="flex-grow overflow-y-auto mb-4 space-y-2">
+          <% @chat.messages.where(user: current_user).order(:created_at).each do |message| %>
+            <div class="bg-gray-100 p-2 rounded-md">
+              <p class="text-sm text-gray-700"><%= message.context %></p>
+              <small class="text-xs text-gray-500">You at <%= message.created_at.strftime("%H:%M") %></small>
+            </div>
+          <% end %>
         </div>
-      <% end %>
-      
-      <% if @chat.messages.empty? %>
-        <p class="text-gray-500 text-center">No messages yet</p>
-      <% end %>
-    </div>
 
-    <div class="mt-auto border-t pt-4">
-      <%= form_with(model: [@chat, Message.new], 
-          local: false, 
-          class: "flex space-x-2 w-full", 
-          id: "new_message", 
-          data: { 
-            turbo_frame: "chat_content",
-            turbo_action: "replace" 
-          }) do |f| %>
-        <%= f.text_area :context, 
-            placeholder: "Type your message...", 
-            rows: 1, 
-            class: "flex-grow min-w-[300px] w-full resize-none rounded-md border border-gray-300 p-2 focus:outline-none focus:ring-2 focus:ring-blue-500" %>
-        
-        <%= f.submit "Send", 
-            class: "bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-md transition duration-300 flex-shrink-0",
-            data: { 
-              disable_with: "Sending...",
-              turbo_submitting: true 
-            } %>
-      <% end %>
+        <div class="mt-auto border-t pt-4">
+          <%= form_with(model: [@chat, Message.new], 
+              local: false, 
+              class: "flex space-x-2 w-full", 
+              id: "new_message", 
+              data: { 
+                turbo_frame: "chat_content",
+                turbo_action: "replace",
+                action: "ajax:beforeSend->turbo-frame#disableForm"
+              }) do |f| %>
+            <%= f.text_area :context, 
+                placeholder: "Type your message...", 
+                rows: 1, 
+                class: "flex-grow min-w-[300px] w-full resize-none rounded-md border border-gray-300 p-2 focus:outline-none focus:ring-2 focus:ring-blue-500",
+                disabled: local_assigns.fetch(:message_disabled, false) %>
+            
+            <%= f.submit "Send", 
+                class: "bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-md transition duration-300 flex-shrink-0",
+                data: { 
+                  disable_with: "Sending...",
+                  turbo_submitting: true 
+                },
+                disabled: local_assigns.fetch(:message_disabled, false) %>
+          <% end %>
+        </div>
+      </div>
+
+      <!-- Bot Responses Column -->
+      <div class="w-1/2 pl-2 flex flex-col border-l">
+        <h1 class="font-bold text-2xl mb-4">Bot Responses</h1>
+
+        <div id="bot_messages" class="flex-grow overflow-y-auto mb-4 space-y-2">
+          <% @chat.messages.where.not(user: current_user).order(:created_at).each do |message| %>
+            <div class="bg-green-500 text-white p-2 rounded-md">
+              <p class="text-sm"><%= message.context %></p>
+              <small class="text-xs opacity-75">Bot at <%= message.created_at.strftime("%H:%M") %></small>
+            </div>
+          <% end %>
+        </div>
+
+        <div id="bot_response_placeholder" class="mt-auto"></div>
+      </div>
     </div>
   </div>
 <% end %>

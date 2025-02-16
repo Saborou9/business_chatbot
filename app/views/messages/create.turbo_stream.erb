@@ -1,29 +1,16 @@
-<%= turbo_stream.append "messages" do %>
+<%= turbo_stream.append "user_messages" do %>
   <div class="bg-gray-100 p-2 rounded-md">
     <p class="text-sm text-gray-700"><%= @message.context %></p>
-    <small class="text-xs text-gray-500"><%= @message.user.email %> at <%= @message.created_at.strftime("%H:%M") %></small>
+    <small class="text-xs text-gray-500">You at <%= @message.created_at.strftime("%H:%M") %></small>
   </div>
 <% end %>
 
 <%= turbo_stream.update "new_message" do %>
-  <%= form_with(model: [@chat, Message.new], 
-      local: false, 
-      class: "flex space-x-2 w-full", 
-      id: "new_message", 
-      data: { 
-        turbo_frame: "chat_content",
-        turbo_action: "replace" 
-      }) do |f| %>
-    <%= f.text_area :context, 
-        placeholder: "Type your message...", 
-        rows: 1, 
-        class: "flex-grow min-w-[300px] w-full resize-none rounded-md border border-gray-300 p-2 focus:outline-none focus:ring-2 focus:ring-blue-500" %>
-    
-    <%= f.submit "Send", 
-        class: "bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-md transition duration-300 flex-shrink-0",
-        data: { 
-          disable_with: "Sending...",
-          turbo_submitting: true 
-        } %>
-  <% end %>
+  <%= render 'messages/form', chat: @chat, message: Message.new, message_disabled: true %>
+<% end %>
+
+<%= turbo_stream.update "bot_response_placeholder" do %>
+  <div class="bg-green-500 text-white p-2 rounded-md animate-pulse">
+    <p class="text-sm">Generating response...</p>
+  </div>
 <% end %>
