@@ -95,7 +95,7 @@ class BuddyFlow(Flow[BuddyState]):
 
     @router(process_input)
     def route_to_crew(self):
-        intent = self.state.input_details.get('intent_classification', '')
+        intent = self.state.input_details.intent_classification
         
         if intent == 'market_research':
             return self.search_google
