@@ -5,13 +5,6 @@ from pydantic import BaseModel, Field
 
 from src.bot_flow.shared_utils.model_utils import get_model_identifier, get_model_api_key
 
-# Define a Pydantic model for the expected output
-class InputProcessingOutput(BaseModel):
-    intent_classification: str = Field(..., description="One of 'market_research', 'business_knowledge', or 'legal'")
-    refined_question: str = Field(..., description="A clear, concise version of the original question")
-    intent_confidence_percentage: int = Field(..., ge=0, le=100, description="Confidence score from 0-100")
-    clarification_request_if_needed: str = Field(default="", description="Any clarification needed")
-
 @CrewBase
 class InputProcessingCrew:
     """Input Processing Crew"""
@@ -44,30 +37,21 @@ class InputProcessingCrew:
             ),
             verbose=self.show_logs,
             cache=False,
-            output_format=InputProcessingOutput  # Specify the output format
         )
 
     @task
     def process_input_task(self) -> Task:
         return Task(
-            description="""
-            Analyze the user's input and classify its intent.
-            
-            REQUIRED OUTPUT:
-            1. intent_classification: MUST be one of:
-               - "market_research"
-               - "business_knowledge"
-               - "legal"
-            2. refined_question: A clear, concise version of the original question
-            3. intent_confidence_percentage: A numerical confidence score (0-100)
-            4. clarification_request_if_needed: Any needed clarification (or empty string)
-            
-            Carefully analyze the input question, determine the primary intent, 
-            refine the question for clarity, and provide a confidence score.
-            """,
             agent=self.input_processing_agent(),
-            expected_output=InputProcessingOutput,  # Use the Pydantic model
-            output_json=InputProcessingOutput  # Use the Pydantic model
+            expected_output="""
+             {
+                 "intent_classification": "market_research" or "business_knowledge" or "legal",
+                 "refined_question": "A clear, concise version of the original question",
+                 "intent_confidence_percentage": 0-100,
+                 "clarification_request_if_needed": "Optional clarification"
+             }
+             """,
+            output_json=True
         )
 
     @crew
