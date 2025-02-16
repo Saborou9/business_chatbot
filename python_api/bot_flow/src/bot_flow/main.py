@@ -6,7 +6,7 @@ from random import randint
 from pydantic import BaseModel
 from crewai.flow import Flow, listen, start, router, or_
 
-from src.bot_flow.types.types import SearchResults, SimpleOutline, FullSection, FullOutline, SearchResult
+from src.bot_flow.types.types import SearchResults, SimpleOutline, FullSection, FullOutline, SearchResult, InputProcessingOutput
 from src.bot_flow.shared_utils.flow_utils import FlowUtils
 
 from src.bot_flow.crews.input_processing_crew.input_processing_crew import InputProcessingCrew
@@ -83,7 +83,11 @@ class BuddyFlow(Flow[BuddyState]):
         else:
             print("Error: Input processing crew returned no result")
             # Set a default intent to prevent NoneType error
-            self.state.input_details = {'intent_classification': 'market_research'}
+            self.state.input_details = InputProcessingOutput(
+                intent_classification='market_research',
+                refined_question=self.state.question,
+                intent_confidence_percentage=50
+            )
 
     @router(process_input)
     def route_to_crew(self):

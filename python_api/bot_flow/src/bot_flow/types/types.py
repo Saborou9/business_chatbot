@@ -40,3 +40,9 @@ class FullOutline(BaseModel):
 class TitleDescription(BaseModel):
     title: str
     description: str
+
+class InputProcessingOutput(BaseModel):
+    intent_classification: str  # One of 'market_research', 'business_knowledge', or 'legal'
+    refined_question: str
+    intent_confidence_percentage: int  # 0-100
+    clarification_request_if_needed: str = ""

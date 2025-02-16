@@ -2,6 +2,7 @@ import os
 from crewai import Agent, Crew, Process, Task, LLM
 from crewai.project import CrewBase, agent, crew, task
 from pydantic import BaseModel, Field
+from src.bot_flow.types.types import InputProcessingOutput
 
 from src.bot_flow.shared_utils.model_utils import get_model_identifier, get_model_api_key
 
@@ -43,14 +44,7 @@ class InputProcessingCrew:
     def process_input_task(self) -> Task:
         return Task(
             agent=self.input_processing_agent(),
-            expected_output="""
-             {
-                 "intent_classification": "market_research" or "business_knowledge" or "legal",
-                 "refined_question": "A clear, concise version of the original question",
-                 "intent_confidence_percentage": 0-100,
-                 "clarification_request_if_needed": "Optional clarification"
-             }
-             """,
+            expected_output=InputProcessingOutput.model_json_schema(),
             output_json=True
         )
 
