@@ -8,9 +8,9 @@ class MessagesController < ApplicationController
     respond_to do |format|
       if @message.save
         format.turbo_stream
-        format.html { redirect_to @chat }
+        format.html { redirect_to @chat, status: :see_other }
       else
-        format.turbo_stream { render turbo_stream: turbo_stream.replace(@message, partial: "messages/form", locals: { chat: @chat, message: @message }) }
+        format.turbo_stream { render turbo_stream: turbo_stream.replace("new_message", partial: "messages/form", locals: { chat: @chat, message: @message }) }
         format.html { render "chats/show", status: :unprocessable_entity }
       end
     end

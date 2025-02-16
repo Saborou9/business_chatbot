@@ -1,6 +1,13 @@
-<%= form_with(model: message, class: "contents") do |form| %>
+<%= form_with(model: [chat, message], 
+    local: false, 
+    class: "flex space-x-2 w-full", 
+    id: "new_message", 
+    data: { 
+      turbo_frame: "chat_content",
+      turbo_action: "replace" 
+    }) do |f| %>
   <% if message.errors.any? %>
-    <div id="error_explanation" class="bg-red-50 text-red-500 px-3 py-2 font-medium rounded-md mt-3">
+    <div id="error_explanation" class="bg-red-50 text-red-500 px-3 py-2 font-medium rounded-md mb-3 w-full">
       <h2><%= pluralize(message.errors.count, "error") %> prohibited this message from being saved:</h2>
 
       <ul class="list-disc ml-6">
@@ -11,7 +18,15 @@
     </div>
   <% end %>
 
-  <div class="inline">
-    <%= form.submit class: "rounded-md px-3.5 py-2.5 bg-blue-600 hover:bg-blue-500 text-white inline-block font-medium cursor-pointer" %>
-  </div>
+  <%= f.text_area :context, 
+      placeholder: "Type your message...", 
+      rows: 1, 
+      class: "flex-grow min-w-[300px] w-full resize-none rounded-md border border-gray-300 p-2 focus:outline-none focus:ring-2 focus:ring-blue-500" %>
+  
+  <%= f.submit "Send", 
+      class: "bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-md transition duration-300 flex-shrink-0",
+      data: { 
+        disable_with: "Sending...",
+        turbo_submitting: true 
+      } %>
 <% end %>
