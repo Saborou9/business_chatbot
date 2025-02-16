@@ -20,10 +20,16 @@ from src.bot_flow.crews.search_crew.search_crew import SearchCrew
 
 class BuddyState(BaseModel):
     question: str = ""
-    input_details: dict = {}
-    search_results_links: SearchResults = SearchResults(search_results=[])
-    parsed_webpages: List[str] = []
-    response: str = ""
+    input_details: InputProcessingOutput = InputProcessingOutput(
+        intent_classification='market_research',
+        refined_question='',
+        intent_confidence_percentage=50
+    )
+    search_results: SearchOutput = SearchOutput()
+    business_knowledge: BusinessKnowledgeOutput = BusinessKnowledgeOutput()
+    legal_analysis: LegalOutput = LegalOutput()
+    fact_checked_info: FactCheckingOutput = FactCheckingOutput()
+    response: ResponseOutput = ResponseOutput()
 
 
 class BuddyFlow(Flow[BuddyState]):
