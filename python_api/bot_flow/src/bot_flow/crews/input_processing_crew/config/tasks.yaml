@@ -1,6 +1,35 @@
 process_input:
   description: >
-    Analyze the user's input and classify its intent.
+    Comprehensive Input Analysis and Intent Classification Workflow
+
+     Input: Receive raw user question: {question}
+
+     Detailed Processing Steps:
+     1. Linguistic Deconstruction
+     - Break down the question into core semantic components
+     - Identify key terminology and contextual markers
+
+     2. Intent Classification Algorithm
+     - Systematically evaluate question against three domain criteria:
+       a) Market Research/Search Indicators:
+          * Presence of comparative terms
+          * External information seeking language
+          * Trend or competitive intelligence markers
+
+       b) Business Knowledge Indicators:
+          * Strategic planning language
+          * Operational improvement queries
+          * Conceptual understanding requests
+
+       c) Legal Domain Indicators:
+          * Compliance-related terminology
+          * Risk assessment language
+          * Regulatory framework questions
+
+     3. Refinement and Clarification
+     - Remove extraneous or ambiguous language
+     - Restructure for maximum clarity
+     - Prepare for downstream crew processing
     
     REQUIRED OUTPUT:
     1. intent_classification: One of "market_research", "business_knowledge", or "legal"
