@@ -1,3 +1,7 @@
+require 'net/http'
+require 'uri'
+require 'json'
+
 class MessagesController < ApplicationController
   before_action :authenticate_user!
   before_action :set_chat
@@ -7,12 +11,17 @@ class MessagesController < ApplicationController
 
     respond_to do |format|
       if @message.save
-        # Trigger bot response generation here
-        # This is a placeholder - you'll need to implement the actual bot response generation
-        bot_response = generate_bot_response(@message)
+        # Send request to Python API
+        bot_response = send_to_agent(@message.context)
+
+        # Create bot message in the chat
+        bot_message = @chat.messages.create(
+          context: bot_response,
+          user: User.find_by(email: 'bot@example.com')
+        )
 
         format.turbo_stream
-        format.html { render partial: "messages/message", locals: { message: @message }, status: :ok }
+        format.html { render partial: 'messages/message', locals: { message: @message }, status: :ok }
       else
         format.turbo_stream { render turbo_stream: turbo_stream.replace("new_message", partial: "messages/form", locals: { chat: @chat, message: @message }) }
         format.html { render "chats/show", status: :unprocessable_entity }
@@ -30,13 +39,22 @@ class MessagesController < ApplicationController
     params.require(:message).permit(:context)
   end
 
-  def generate_bot_response(message)
-    # Implement your bot response generation logic here
-    # This is just a placeholder
-    bot_response = @chat.messages.create(
-      context: "This is a bot response to: #{message.context}",
-      user: User.find_by(email: "bot@example.com")
-    )
-    bot_response
+  def send_to_agent(question)
+    uri = URI.parse("http://localhost:8000/run_agent/")
+    
+    http = Net::HTTP.new(uri.host, uri.port)
+    request = Net::HTTP::Post.new(uri.path, 'Content-Type' => 'application/json')
+    request.body = { input: question }.to_json
+
+    response = http.request(request)
+    
+    if response.code == '200'
+      parsed_response = JSON.parse(response.body)
+      parsed_response['response']
+    else
+      "Sorry, I couldn't generate a response at this time."
+    end
+  rescue StandardError => e
+    "An error occurred: #{e.message}"
   end
 end
