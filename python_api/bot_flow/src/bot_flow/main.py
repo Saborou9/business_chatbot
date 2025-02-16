@@ -45,8 +45,7 @@ class BuddyFlow(Flow[BuddyState]):
         model_name: str,
     ):
         # Initialize with the state
-        super().__init__(state=BuddyState(question=question))
-        
+        self.question = question
         self.show_logs = show_logs
         self.directory = (f"output/{directory}")
         self.search_timeframe = search_timeframe
@@ -69,6 +68,8 @@ class BuddyFlow(Flow[BuddyState]):
     @start()
     def process_input(self):
         print("Processing users input")
+        self.state.question = self.question
+
         result = (
             InputProcessingCrew(
                 show_logs=self.show_logs,
@@ -96,21 +97,18 @@ class BuddyFlow(Flow[BuddyState]):
     @router(process_input)
     def route_to_crew(self):
         print(f"Routing based on intent: {self.state.input_details.intent_classification}")
+        intent = self.state.input_details.intent_classification
         
-        if self.state.input_details.intent_classification == 'market_research':
+        if intent == "search_google_intent":
             print("Routing to search_google")
-            return self.search_google
-        elif self.state.input_details.intent_classification == 'business_knowledge':
+        elif intent == 'business_knowledge_intent':
             print("Routing to business_knowledge")
-            return self.business_knowledge
-        elif self.state.input_details.intent_classification == 'legal':
+        elif intent == 'legal_intent':
             print("Routing to legal")
-            return self.legal
         else:
             print("No clear intent detected. Defaulting to search.")
-            return self.search_google
 
-    @listen(route_to_crew)
+    @listen("search_google_intent")
     def search_google(self):
         print("Searching Google")
         result = (
@@ -119,7 +117,7 @@ class BuddyFlow(Flow[BuddyState]):
                 search_timeframe=self.search_timeframe,
                 search_results=self.search_results,
                 model_name=self.model_name,
-                topic=self.state.question,  # Pass the question as topic
+                topic=self.state.question,
                 search_results_parsed=self.search_results_parsed
             )
             .crew()
@@ -171,7 +169,7 @@ class BuddyFlow(Flow[BuddyState]):
 
         self.utils.save_step_result_to_file(self.directory, "parse_results", self.state.raw_outlines, format="pydantic")
 
-    @listen(route_to_crew)
+    @listen("business_knowledge_intent")
     def business_knowledge(self):
         print("Extracting business knowledge")
         result = (
@@ -189,7 +187,7 @@ class BuddyFlow(Flow[BuddyState]):
         self.utils.save_step_result_to_file(self.directory, "business_knowledge", self.state.business_knowledge, format="pydantic")
 
 
-    @listen(route_to_crew)
+    @listen("legal_intent")
     def legal(self):
         print("Legal")
         result = (
@@ -200,6 +198,7 @@ class BuddyFlow(Flow[BuddyState]):
             .crew()
             .kickoff(inputs={
                 "input_details": self.state.input_details,
+                "question": self.state.input_details.refined_question,
                 "business_knowledge": self.state.business_knowledge
             })
         )
