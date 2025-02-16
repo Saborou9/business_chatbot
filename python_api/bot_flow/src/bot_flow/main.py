@@ -236,24 +236,8 @@ class BuddyFlow(Flow[BuddyState]):
         self.state.response = result.pydantic
         self.utils.save_step_result_to_file(self.directory, "response", self.state.response, format="pydantic")
 
-def kickoff(
-    question="Default question", 
-    show_logs=True, 
-    directory="default_output", 
-    search_timeframe="d", 
-    search_results=5, 
-    search_results_parsed=2, 
-    model_name="4o-mini"
-):
-    buddy_flow = BuddyFlow(
-        question=question,
-        show_logs=show_logs,
-        directory=directory,
-        search_timeframe=search_timeframe,
-        search_results=search_results,
-        search_results_parsed=search_results_parsed,
-        model_name=model_name
-    )
+def kickoff():
+    buddy_flow = BuddyFlow()
     buddy_flow.kickoff()
 
 def plot():
