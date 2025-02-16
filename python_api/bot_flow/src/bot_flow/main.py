@@ -20,11 +20,7 @@ from src.bot_flow.crews.search_crew.search_crew import SearchCrew
 
 class BuddyState(BaseModel):
     question: str = ""
-    input_details: InputProcessingOutput = InputProcessingOutput(
-        intent_classification='market_research',
-        refined_question='',
-        intent_confidence_percentage=50
-    )
+    input_details: InputProcessingOutput = InputProcessingOutput()
     search_results: SearchOutput = SearchOutput()
     business_knowledge: BusinessKnowledgeOutput = BusinessKnowledgeOutput()
     legal_analysis: LegalOutput = LegalOutput()
@@ -44,7 +40,7 @@ class BuddyFlow(Flow[BuddyState]):
         search_results_parsed: int,
         model_name: str,
     ):
-        # Initialize with the state
+        super().__init__()
         self.question = question
         self.show_logs = show_logs
         self.directory = (f"output/{directory}")
@@ -87,24 +83,21 @@ class BuddyFlow(Flow[BuddyState]):
             self.utils.save_step_result_to_file(self.directory, "process_input", self.state, format="pydantic")
         else:
             print("Error: Input processing crew returned no result")
-            # Set a default intent to prevent NoneType error
-            self.state.input_details = InputProcessingOutput(
-                intent_classification='market_research',
-                refined_question=self.state.question,
-                intent_confidence_percentage=50
-            )
 
     @router(process_input)
     def route_to_crew(self):
         print(f"Routing based on intent: {self.state.input_details.intent_classification}")
         intent = self.state.input_details.intent_classification
         
-        if intent == "search_google_intent":
+        if intent == "market_research":
             print("Routing to search_google")
-        elif intent == 'business_knowledge_intent':
+            return "search_google_intent"
+        elif intent == 'business_knowledge':
             print("Routing to business_knowledge")
-        elif intent == 'legal_intent':
+            return "business_knowledge_intent"
+        elif intent == 'legal':
             print("Routing to legal")
+            return "legal_intent"
         else:
             print("No clear intent detected. Defaulting to search.")
 
