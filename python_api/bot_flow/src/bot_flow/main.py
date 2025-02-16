@@ -198,7 +198,6 @@ class BuddyFlow(Flow[BuddyState]):
             .kickoff(inputs={
                 "input_details": self.state.input_details,
                 "question": self.state.input_details.refined_question,
-                "business_knowledge": self.state.business_knowledge
             })
         )
         self.state.legal_analysis = result.pydantic
@@ -214,7 +213,6 @@ class BuddyFlow(Flow[BuddyState]):
             )
             .crew()
             .kickoff(inputs={
-                "input_details": self.state.input_details,
                 "business_knowledge": self.state.business_knowledge,
                 "legal_analysis": self.state.legal_analysis
             })
@@ -232,11 +230,9 @@ class BuddyFlow(Flow[BuddyState]):
             )
             .crew()
             .kickoff(inputs={
-                "input_details": self.state.input_details,
                 "search_results": self.state.search_results,
                 "business_knowledge": self.state.business_knowledge,
                 "legal_analysis": self.state.legal_analysis,
-                "fact_checked_info": self.state.fact_checked_info
             })
         )
         self.state.response = result.pydantic
