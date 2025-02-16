@@ -142,7 +142,7 @@ class BuddyFlow(Flow[BuddyState]):
         #     datax = json.load(f)
         #     self.state.search_results_links = SearchResults(**datax)
         
-        inputs_array = [{"topic": self.state.input_details.get('refined_question', ''), "url": link.link, "word_count": self.word_count} for link in self.state.search_results_links.search_results]
+        inputs_array = [{"topic": self.state.input_details.refined_question, "url": link.link} for link in self.state.search_results_links.search_results]
 
         # Remove all files from scrped directory
         for file in os.listdir(f"{self.directory}/scraped"):
@@ -166,10 +166,7 @@ class BuddyFlow(Flow[BuddyState]):
         for file in os.listdir(f"{self.directory}/scraped"):
             with open(f"{self.directory}/scraped/{file}", "r") as f:
                 kb_article = f.read()
-                self.embedding_tokens += len(self.encoding.encode(kb_article))
                 self.state.parsed_webpages.append(kb_article)
-
-        self.utils.save_step_result_to_file(self.directory, "parse_results", self.state.raw_outlines, format="pydantic")
 
     @listen("business_knowledge_intent")
     def business_knowledge(self):
