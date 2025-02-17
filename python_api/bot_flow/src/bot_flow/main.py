@@ -6,16 +6,16 @@ from random import randint
 from pydantic import BaseModel
 from crewai.flow import Flow, listen, start, router, or_
 
-from src.bot_flow.types.types import SearchResult, InputProcessingOutput, SearchOutput, BusinessKnowledgeOutput, LegalOutput, FactCheckingOutput, ResponseOutput
-from src.bot_flow.shared_utils.flow_utils import FlowUtils
+from bot_flow.src.bot_flow.types.types import SearchResult, InputProcessingOutput, SearchOutput, BusinessKnowledgeOutput, LegalOutput, FactCheckingOutput, ResponseOutput
+from bot_flow.src.bot_flow.shared_utils.flow_utils import FlowUtils
 
-from src.bot_flow.crews.input_processing_crew.input_processing_crew import InputProcessingCrew
-from src.bot_flow.crews.business_knowledge_crew.business_knowledge_crew import BusinessKnowledgeCrew
-from src.bot_flow.crews.fact_checking_crew.fact_checking_crew import FactCheckingCrew
-from src.bot_flow.crews.legal_crew.legal_crew import LegalCrew
-from src.bot_flow.crews.response_crew.response_crew import ResponseCrew
-from src.bot_flow.crews.scrape_crew.scrape_crew import ScrapeCrew
-from src.bot_flow.crews.search_crew.search_crew import SearchCrew
+from bot_flow.src.bot_flow.crews.input_processing_crew.input_processing_crew import InputProcessingCrew
+from bot_flow.src.bot_flow.crews.business_knowledge_crew.business_knowledge_crew import BusinessKnowledgeCrew
+from bot_flow.src.bot_flow.crews.fact_checking_crew.fact_checking_crew import FactCheckingCrew
+from bot_flow.src.bot_flow.crews.legal_crew.legal_crew import LegalCrew
+from bot_flow.src.bot_flow.crews.response_crew.response_crew import ResponseCrew
+from bot_flow.src.bot_flow.crews.scrape_crew.scrape_crew import ScrapeCrew
+from bot_flow.src.bot_flow.crews.search_crew.search_crew import SearchCrew
 
 
 class BuddyState(BaseModel):
