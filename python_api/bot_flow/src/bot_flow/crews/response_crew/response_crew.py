@@ -2,7 +2,7 @@ import os
 from crewai import Agent, Crew, Process, Task, LLM
 from crewai.project import CrewBase, agent, crew, task
 
-from src.bot_flow.shared_utils.model_utils import get_model_identifier, get_model_api_key
+from bot_flow.src.bot_flow.shared_utils.model_utils import get_model_identifier, get_model_api_key
 
 @CrewBase
 class ResponseCrew:
