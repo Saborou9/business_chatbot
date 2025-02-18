@@ -224,6 +224,23 @@ class BuddyFlow(Flow[BuddyState]):
     def response(self):
         print("Generating response")
 
+        # Prepare inputs dynamically based on available state
+        inputs = {
+            "question": self.question
+        }
+
+        # Conditionally add inputs based on intent and available state
+        intent = self.state.input_details.intent_classification
+
+        if intent == "market_research" and self.state.search_results:
+            inputs["search_results"] = self.state.search_results
+
+        if intent == "business_knowledge" and self.state.business_knowledge:
+            inputs["business_knowledge"] = self.state.business_knowledge
+
+        if intent == "legal" and self.state.legal_analysis:
+            inputs["legal_analysis"] = self.state.legal_analysis
+
         # Kickoff the response crew with conditional inputs
         response_crew = (
             ResponseCrew(
@@ -232,12 +249,7 @@ class BuddyFlow(Flow[BuddyState]):
             )
         )
 
-        response = response_crew.crew().kickoff(inputs={
-            "question": self.question,
-            "search_results": self.state.search_results,
-            "business_knowledge": self.state.business_knowledge,
-            "legal_analysis": self.state.legal_analysis
-        })
+        response = response_crew.crew().kickoff(inputs=inputs)
 
         # Ensure we save the pydantic result
         if response and response.pydantic:
