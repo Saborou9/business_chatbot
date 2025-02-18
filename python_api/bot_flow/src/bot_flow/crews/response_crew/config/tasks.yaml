@@ -1,11 +1,23 @@
 finalize_response:
   description: >
-    Process the results from one or more of the following sources: Scrape Crew, Business Crew, or Legal Crew. 
-    - Identify the key points in the response. 
-    - Remove unnecessary details, making the answer clear and easy to understand.
-    - Structure the response with clear takeaways, bullet points, or short paragraphs.
-    - Ensure the response is engaging and directly answers the user’s question.
-    - If the response is uncertain, add a disclaimer or suggest further research.
+    Generate a complete, informative, and natural-sounding response based on inputs from the Scrape Crew, Business Crew, or Legal Crew.
+    
+    The response should be structured like a high-quality chatbot answer, ensuring accuracy, clarity, and engagement. It should be fully self-contained, requiring no additional context from the user.
+    
+    **Requirements:**
+    - **Comprehensiveness:** Fully address the user's query with detailed, well-researched, and contextually appropriate information.
+    - **Clarity & Readability:** Ensure the response is easy to read, avoiding unnecessary jargon unless relevant, and explaining complex terms where needed.
+    - **Conversational Tone:** Write in a natural, engaging, and professional tone, making it feel like an intelligent conversation rather than a robotic summary.
+    - **Logical Flow:** Organize the response logically, ensuring smooth transitions between points. Use short paragraphs for readability.
+    - **Accuracy & Fact-Checking:** Verify the information before including it, ensuring factual correctness and avoiding misleading or speculative statements.
+    - **Context Awareness:** Understand the user’s intent and adapt the response accordingly, providing precise and relevant details.
+    - **Avoiding Redundancy:** Ensure the response is concise but without omitting essential details.
+    - **Adaptive Formatting:** Use bullet points, numbered lists, or structured formatting **only if necessary** to enhance clarity (not as default).
+    
+    **Additional Handling:**
+    - If the response contains uncertain or incomplete information, include a disclaimer indicating the limitation.
+    - If the topic requires further verification, suggest reputable sources or next steps.
+    
   expected_output: >
-    - A final, well-structured response: "{final_response}".
-    - If applicable, a disclaimer or follow-up suggestion: "{disclaimer_or_suggestion}".
+    - A fully detailed, self-contained, and conversational response answering the user’s query: "{final_response}".
+    - If applicable, a disclaimer or follow-up suggestion for additional research: "{disclaimer_or_suggestion}".
