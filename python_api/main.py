@@ -1,5 +1,4 @@
 from fastapi import FastAPI, HTTPException
-import subprocess
 from bot_flow.src.bot_flow.main import BuddyFlow
 import os
 from datetime import datetime
@@ -9,13 +8,18 @@ app = FastAPI()
 @app.post("/run_agent/")
 async def run_agent(data: dict):
     user_input = data.get("input", "")
+    user_id = data.get("user_id", "unknown")
     
     if not user_input:
         raise HTTPException(status_code=400, detail="No input provided")
 
-    # Generate a unique directory name based on current timestamp
+    # Create logs directory if it doesn't exist
+    logs_base_dir = "logs"
+    os.makedirs(logs_base_dir, exist_ok=True)
+
+    # Generate a unique directory name based on user ID and current timestamp
     timestamp = datetime.now().strftime("%y_%m_%d_%H_%M_%S")
-    directory = f"{timestamp}"
+    directory = os.path.join(logs_base_dir, f"{user_id}_{timestamp}")
     os.makedirs(directory, exist_ok=True)
 
     try:

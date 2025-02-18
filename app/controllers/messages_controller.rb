@@ -44,7 +44,10 @@ class MessagesController < ApplicationController
     
     http = Net::HTTP.new(uri.host, uri.port)
     request = Net::HTTP::Post.new(uri.path, 'Content-Type' => 'application/json')
-    request.body = { input: question }.to_json
+    request.body = { 
+      input: question, 
+      user_id: current_user.id 
+    }.to_json
 
     response = http.request(request)
     
