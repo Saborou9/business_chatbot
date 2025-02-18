@@ -178,8 +178,7 @@ class BuddyFlow(Flow[BuddyState]):
             )
             .crew()
             .kickoff(inputs={
-                "input_details": self.state.input_details,
-                "search_results": self.state.search_results
+                "refined_question": self.state.input_details.refined_question,
             })
         )
         self.state.business_knowledge = result.pydantic
@@ -196,8 +195,7 @@ class BuddyFlow(Flow[BuddyState]):
             )
             .crew()
             .kickoff(inputs={
-                "input_details": self.state.input_details,
-                "question": self.state.input_details.refined_question,
+                "refined_question": self.state.input_details.refined_question,
             })
         )
         self.state.legal_analysis = result.pydantic
@@ -206,16 +204,26 @@ class BuddyFlow(Flow[BuddyState]):
     @listen(or_(business_knowledge, legal))
     def fact_checking(self):
         print("Fact checking")
+
+        inputs = {
+            "question": self.question
+        }
+
+        intent = self.state.input_details.intent_classification
+
+        if intent == "business_knowledge" and self.state.business_knowledge:
+            inputs["business_knowledge"] = self.state.business_knowledge
+
+        if intent == "legal" and self.state.legal_analysis:
+            inputs["legal_analysis"] = self.state.legal_analysis
+
         result = (
             FactCheckingCrew(
                 show_logs=self.show_logs,
                 model_name=self.model_name
             )
             .crew()
-            .kickoff(inputs={
-                "business_knowledge": self.state.business_knowledge,
-                "legal_analysis": self.state.legal_analysis
-            })
+            .kickoff(inputs=inputs)
         )
         self.state.fact_checked_info = result.pydantic
         self.utils.save_step_result_to_file(self.directory, "fact_checking", self.state.fact_checked_info, format="pydantic")
