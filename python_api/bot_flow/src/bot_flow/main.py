@@ -212,10 +212,10 @@ class BuddyFlow(Flow[BuddyState]):
         intent = self.state.input_details.intent_classification
 
         if intent == "business_knowledge" and self.state.business_knowledge:
-            inputs["business_knowledge"] = self.state.business_knowledge
+            inputs["business_knowledge"] = self.state.business_knowledge.dict()
 
         if intent == "legal" and self.state.legal_analysis:
-            inputs["legal_analysis"] = self.state.legal_analysis
+            inputs["legal_analysis"] = {"legal_analysis": self.state.legal_analysis.legal_analysis}
 
         result = (
             FactCheckingCrew(
