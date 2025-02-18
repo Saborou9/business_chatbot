@@ -46,7 +46,7 @@ class ResponseCrew:
         return Task(
             config=self.tasks_config["finalize_response"],
             agent=self.final_response_agent(),
-            output_pydantic=ResponseOutput
+            output_pydantic=ResponseOutput,
             context=self.inputs
         )
 
