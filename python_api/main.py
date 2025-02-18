@@ -24,7 +24,7 @@ async def run_agent(data: dict):
     os.makedirs(directory, exist_ok=True)
 
     try:
-        flow_result = BuddyFlow(
+        flow = BuddyFlow(
             question=user_input,
             directory=directory,
             show_logs=False,
@@ -32,7 +32,9 @@ async def run_agent(data: dict):
             search_timeframe="d",
             search_results=10,
             search_results_parsed=2,
-        ).kickoff()
+        )
+
+        flow_result = await flow.kickoff_async()
 
         # Assuming the flow returns a response that can be extracted
         response = flow_result.final_response if hasattr(flow_result, 'final_response') else "No response generated"

@@ -46,10 +46,20 @@ class ChatsController < ApplicationController
   end
 
   def update_preferred_model
-    if @chat.update(preferred_model: params[:preferred_model])
-      redirect_to @chat, notice: 'Model preference updated.'
+    Rails.logger.debug "Received params: #{params.inspect}"
+
+    if @chat.update(params.require(:chat).permit(:preferred_model))
+      respond_to do |format|
+        format.turbo_stream { render turbo_stream: turbo_stream.replace("chat_content", partial: "chats/chat_content", locals: { chat: @chat }) }
+        format.html { redirect_to chat_path(@chat), notice: "Model updated." }
+      end
     else
-      redirect_to @chat, alert: 'Failed to update model preference.'
+      Rails.logger.error "Failed to update model: #{@chat.errors.full_messages.join(', ')}"
+
+      respond_to do |format|
+        format.turbo_stream { render turbo_stream: turbo_stream.replace("chat_content", partial: "chats/chat_content", locals: { chat: @chat }) }
+        format.html { redirect_to chat_path(@chat), alert: "Failed to update model." }
+      end
     end
   end
 

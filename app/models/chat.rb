@@ -5,7 +5,7 @@ class Chat < ApplicationRecord
 
   validates :preferred_model,
     inclusion: {
-      in: [ "GPT-3.5", "GPT-4", "Claude-2", "Gemini", "Anthropic" ],
+      in: [ "deepseek", "4o-mini", "4o", "sonnet", "haiku" ],
       allow_nil: true
     }
 end
