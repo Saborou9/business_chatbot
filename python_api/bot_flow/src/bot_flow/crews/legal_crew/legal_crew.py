@@ -2,6 +2,7 @@ import os
 from crewai import Agent, Crew, Process, Task, LLM
 from crewai.project import CrewBase, agent, crew, task
 
+from bot_flow.src.bot_flow.types.types import LegalOutput
 from bot_flow.src.bot_flow.shared_utils.model_utils import get_model_identifier, get_model_api_key
 
 @CrewBase
@@ -42,7 +43,8 @@ class LegalCrew:
     def provide_legal_guidance_task(self) -> Task:
         return Task(
             config=self.tasks_config["provide_legal_guidance"],
-            agent=self.legal_compliance_agent()
+            agent=self.legal_compliance_agent(),
+            output_pydantic=LegalOutput
         )
 
     @crew

@@ -195,7 +195,7 @@ class BuddyFlow(Flow[BuddyState]):
             )
             .crew()
             .kickoff(inputs={
-                "refined_question": self.state.input_details.refined_question,
+                "question": self.state.input_details.refined_question,
             })
         )
         self.state.legal_analysis = result.pydantic

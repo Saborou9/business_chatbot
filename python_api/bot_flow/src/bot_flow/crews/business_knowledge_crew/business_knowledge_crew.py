@@ -2,6 +2,7 @@ import os
 from crewai import Agent, Crew, Process, Task, LLM
 from crewai.project import CrewBase, agent, crew, task
 
+from bot_flow.src.bot_flow.types.types import BusinessKnowledgeOutput
 from bot_flow.src.bot_flow.shared_utils.model_utils import get_model_identifier, get_model_api_key
 
 @CrewBase
@@ -42,7 +43,8 @@ class BusinessKnowledgeCrew:
     def provide_business_answer_task(self) -> Task:
         return Task(
             config=self.tasks_config["provide_business_answer"],
-            agent=self.business_knowledge_agent()
+            agent=self.business_knowledge_agent(),
+            output_pydantic=BusinessKnowledgeOutput
         )
 
     @crew

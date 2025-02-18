@@ -2,6 +2,7 @@ import os
 from crewai import Agent, Crew, Process, Task, LLM
 from crewai.project import CrewBase, agent, crew, task
 
+from bot_flow.src.bot_flow.types.types import ResponseOutput
 from bot_flow.src.bot_flow.shared_utils.model_utils import get_model_identifier, get_model_api_key
 
 @CrewBase
@@ -45,6 +46,7 @@ class ResponseCrew:
         return Task(
             config=self.tasks_config["finalize_response"],
             agent=self.final_response_agent(),
+            output_pydantic=ResponseOutput
             context=self.inputs
         )
 
