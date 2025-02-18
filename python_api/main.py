@@ -9,6 +9,7 @@ app = FastAPI()
 async def run_agent(data: dict):
     user_input = data.get("input", "")
     user_id = data.get("user_id", "unknown")
+    model_name = data.get("model_name", "gpt-3.5-turbo")
     
     if not user_input:
         raise HTTPException(status_code=400, detail="No input provided")
@@ -27,7 +28,7 @@ async def run_agent(data: dict):
             question=user_input,
             directory=directory,
             show_logs=False,
-            model_name="sonnet",
+            model_name=model_name,
             search_timeframe="d",
             search_results=10,
             search_results_parsed=2,

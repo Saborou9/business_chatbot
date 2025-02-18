@@ -46,7 +46,8 @@ class MessagesController < ApplicationController
     request = Net::HTTP::Post.new(uri.path, 'Content-Type' => 'application/json')
     request.body = { 
       input: question, 
-      user_id: current_user.id 
+      user_id: current_user.id,
+      model_name: @chat.preferred_model || 'gpt-3.5-turbo'
     }.to_json
 
     response = http.request(request)
