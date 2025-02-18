@@ -228,18 +228,23 @@ class BuddyFlow(Flow[BuddyState]):
         response_crew = (
             ResponseCrew(
                 show_logs=self.show_logs,
-                model_name=self.model_name,
-                inputs={"question": self.question,
-                    "search_results": self.state.search_results,
-                    "business_knowledge": self.state.business_knowledge,
-                    "legal_analysis": self.state.legal}
+                model_name=self.model_name
             )
         )
 
-        response = response_crew.crew().kickoff()
+        response = response_crew.crew().kickoff(inputs={
+            "question": self.question,
+            "search_results": self.state.search_results,
+            "business_knowledge": self.state.business_knowledge,
+            "legal_analysis": self.state.legal_analysis
+        })
 
-        self.utils.save_step_result_to_file(self.directory, "response", response, format="pydantic" )
-        self.state.response = response
+        # Ensure we save the pydantic result
+        if response and response.pydantic:
+            self.utils.save_step_result_to_file(self.directory, "response", response.pydantic, format="pydantic")
+            self.state.response = response.pydantic
+        else:
+            print("Error: Response crew returned no result")
 
 def kickoff():
     buddy_flow = BuddyFlow()
