@@ -9,7 +9,7 @@ app = FastAPI()
 async def run_agent(data: dict):
     user_input = data.get("input", "")
     user_id = data.get("user_id", "unknown")
-    model_name = data.get("model_name", "gpt-3.5-turbo")
+    model_name = data.get("model_name", "4o-mini")
     
     if not user_input:
         raise HTTPException(status_code=400, detail="No input provided")
