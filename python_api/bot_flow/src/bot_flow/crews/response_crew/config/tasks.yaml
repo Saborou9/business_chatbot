@@ -3,18 +3,25 @@ finalize_response:
     Generate a complete, informative, and natural-sounding response based on inputs from the Scrape Crew, Business Crew, or Legal Crew.
     
     The response should be structured like a high-quality chatbot answer, ensuring accuracy, clarity, and engagement. It should be fully self-contained, requiring no additional context from the user.
+
+    Instructions:
+    - Use the following inputs to construct your answer:
+     - Question: {question}
+     - Search Results (if available): {market_research}
+     - Business Knowledge (if available): {business_knowledge}
+     - Legal Analysis (if available): {legal_analysis}
+
+    Requirements:
+    - Comprehensiveness: Fully address the user's query with detailed, well-researched, and contextually appropriate information.
+    - Clarity & Readability: Ensure the response is easy to read, avoiding unnecessary jargon unless relevant, and explaining complex terms where needed.
+    - Conversational Tone: Write in a natural, engaging, and professional tone, making it feel like an intelligent conversation rather than a robotic summary.
+    - Logical Flow: Organize the response logically, ensuring smooth transitions between points. Use short paragraphs for readability.
+    - Accuracy & Fact-Checking: Verify the information before including it, ensuring factual correctness and avoiding misleading or speculative statements.
+    - Context Awareness: Understand the user’s intent and adapt the response accordingly, providing precise and relevant details.
+    - Avoiding Redundancy: Ensure the response is concise but without omitting essential details.
+    - Adaptive Formatting: Use bullet points, numbered lists, or structured formatting **only if necessary** to enhance clarity (not as default).
     
-    **Requirements:**
-    - **Comprehensiveness:** Fully address the user's query with detailed, well-researched, and contextually appropriate information.
-    - **Clarity & Readability:** Ensure the response is easy to read, avoiding unnecessary jargon unless relevant, and explaining complex terms where needed.
-    - **Conversational Tone:** Write in a natural, engaging, and professional tone, making it feel like an intelligent conversation rather than a robotic summary.
-    - **Logical Flow:** Organize the response logically, ensuring smooth transitions between points. Use short paragraphs for readability.
-    - **Accuracy & Fact-Checking:** Verify the information before including it, ensuring factual correctness and avoiding misleading or speculative statements.
-    - **Context Awareness:** Understand the user’s intent and adapt the response accordingly, providing precise and relevant details.
-    - **Avoiding Redundancy:** Ensure the response is concise but without omitting essential details.
-    - **Adaptive Formatting:** Use bullet points, numbered lists, or structured formatting **only if necessary** to enhance clarity (not as default).
-    
-    **Additional Handling:**
+    Additional Handling:
     - If the response contains uncertain or incomplete information, include a disclaimer indicating the limitation.
     - If the topic requires further verification, suggest reputable sources or next steps.
     

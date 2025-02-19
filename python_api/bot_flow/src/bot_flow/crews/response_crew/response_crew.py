@@ -14,12 +14,10 @@ class ResponseCrew:
         show_logs=False,
         model_name="4o-mini",
         directory="",
-        inputs = None
     ):
         self.show_logs = show_logs
         self.model_name = model_name
         self.directory = directory
-        self.inputs = inputs or {}
 
     agents_config = "config/agents.yaml"
     tasks_config = "config/tasks.yaml"
@@ -47,7 +45,6 @@ class ResponseCrew:
             config=self.tasks_config["finalize_response"],
             agent=self.final_response_agent(),
             output_pydantic=ResponseOutput,
-            context=self.inputs
         )
 
     @crew
