@@ -96,9 +96,25 @@ deactivate
 
 ---
 
-Tento README obsahuje základné kroky na inštaláciu Ruby, Ruby on Rails a Pythonu na rôznych distribúciách Linuxu. Ak narazíte na problémy, odporúčame skontrolovať oficiálnu dokumentáciu jednotlivých technológií:
+## 5. Instalacia ruby gems a python requirements
 
-- [Ruby](https://www.ruby-lang.org/)
-- [Ruby on Rails](https://rubyonrails.org/)
-- [Python](https://www.python.org/)
+v root projektu spustit tento command
 
+```sh
+bundle install
+```
+
+Nasledovne prejst do python_api directory a spustit tento command
+
+```sh
+pip install requirements
+```
+
+## 6. Spustenie projektu
+
+V root projektu spustit server
+
+```sh
+bin/dev
+```
+Navigovat na dany localhost a je to hotove.
