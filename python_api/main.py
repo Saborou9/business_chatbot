@@ -36,14 +36,6 @@ async def run_agent(data: dict):
 
         flow_result = await flow.kickoff_async()
 
-        # Extract response using final_response
-        response = (
-            flow_result.state.response.final_response if 
-            hasattr(flow_result.state, 'response') and 
-            hasattr(flow_result.state.response, 'final_response') 
-            else "No response generated"
-        )
-
-        return {"response": response}
+        return {"response": flow_result}
     except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+        raise HTTPException(status_code=500, detail=str(e.message))

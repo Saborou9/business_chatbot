@@ -1,61 +1,71 @@
-<%= turbo_frame_tag "chat_content" do %>
-  <div class="p-4 h-full flex flex-col">
-    <div class="flex justify-center mb-4">
-      <%= form_with(model: @chat, url: update_preferred_model_chat_path(@chat), method: :patch, local: true, class: "w-full max-w-xs") do |f| %>
-        <%= f.select :preferred_model, 
-            [
-              ['Deepseek', 'deepseek'], 
-              ['GPT-4o-mini', '4o-mini'],
-              ['GPT-4o', '4o'],
-              ['Claude Sonnet', 'sonnet'], 
-              ['Claude Haiku', 'haiku']
-            ], 
-            { selected: @chat.preferred_model || '4o-mini' },
-            {
-              class: 'appearance-none bg-white border border-green-500 text-black text-sm rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 block w-full p-2.5',
-              onchange: 'this.form.submit()'
-            } 
-        %>
-      <% end %>
-    </div>
-
-    <div class="flex-grow overflow-y-auto mb-4 space-y-2" id="messages">
-      <% @chat.messages.order(:created_at).each do |message| %>
-        <div class="flex <%= message.user == current_user ? 'justify-end' : 'justify-start' %> w-full">
-          <div class="<%= message.user == current_user ? 'bg-gray-100' : 'bg-green-500 text-white' %> p-2 rounded-md max-w-[70%]">
-            <p class="text-sm"><%= message.context %></p>
-            <small class="text-xs <%= message.user == current_user ? 'text-gray-500' : 'opacity-75' %>">
-              <%= message.user == current_user ? 'You' : 'Bot' %> at <%= message.created_at.strftime("%H:%M") %>
-            </small>
-          </div>
-        </div>
-      <% end %>
-      <div id="bot_response_placeholder"></div>
-    </div>
-
-    <div class="mt-auto border-t pt-4">
-      <%= form_with(model: [@chat, Message.new], 
-          local: false, 
-          class: "flex space-x-2 w-full", 
-          id: "new_message", 
-          data: { 
-            turbo_frame: "chat_content",
-            turbo_action: "replace"
-          }) do |f| %>
-        <%= f.text_area :context, 
-            placeholder: "Type your message...", 
-            rows: 1, 
-            class: "flex-grow min-w-[300px] w-full resize-none rounded-md border border-gray-300 p-2 focus:outline-none focus:ring-2 focus:ring-green-500 text-black",
-            disabled: local_assigns.fetch(:message_disabled, false) %>
-        
-        <%= f.submit "Send", 
-            class: "bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded-md transition duration-300 flex-shrink-0",
-            data: { 
-              disable_with: "Sending...",
-              turbo_submitting: true 
-            },
-            disabled: local_assigns.fetch(:message_disabled, false) %>
-      <% end %>
-    </div>
+<div class="fixed inset-0 flex overflow-hidden">
+  <div class="w-64 bg-gray-900 text-white flex flex-col">
+    <%= render partial: 'sidebar' %>
   </div>
-<% end %>
+
+  <%= turbo_stream_from @chat %>
+  
+  <div class="flex-1 bg-gray-800 overflow-hidden">
+    <%= turbo_frame_tag "chat_content" do %>
+      <div class="p-4 h-full flex flex-col">
+        <div class="flex justify-center mb-4">
+          <%= form_with(model: @chat, url: update_preferred_model_chat_path(@chat), method: :patch, local: true, class: "w-full max-w-xs") do |f| %>
+            <%= f.select :preferred_model, 
+                [
+                  ['Deepseek', 'deepseek'], 
+                  ['GPT-4o-mini', '4o-mini'],
+                  ['GPT-4o', '4o'],
+                  ['Claude Sonnet', 'sonnet'], 
+                  ['Claude Haiku', 'haiku']
+                ], 
+                { selected: @chat.preferred_model || '4o-mini' },
+                {
+                  class: 'appearance-none bg-white border border-green-500 text-black text-sm rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 block w-full p-2.5',
+                  onchange: 'this.form.submit()'
+                } 
+            %>
+          <% end %>
+        </div>
+
+        <div class="flex-grow overflow-y-auto mb-4 space-y-2" id="messages">
+          <% @chat.messages.order(:created_at).each do |message| %>
+            <div class="flex <%= message.message_type_user? ? 'justify-end pr-2' : 'justify-start' %> w-full">
+              <div class="<%= message.message_type_user?  ? 'bg-gray-100 text-slate-900' : 'bg-green-500 text-white' %> p-2 rounded-md max-w-[70%]">
+                <p class="text-sm"><%= message.context %></p>
+                <small class="text-xs <%= message.message_type_user? ? 'text-gray-500' : 'opacity-75' %>">
+                  <%= message.message_type_user? ? 'You' : 'Bot' %> at <%= message.created_at.strftime("%H:%M") %>
+                </small>
+              </div>
+            </div>
+          <% end %>
+          <div id="bot_response_placeholder"></div>
+        </div>
+
+        <div class="mt-auto border-t pt-4" id="new-message">
+          <%= form_with(model: [@chat, Message.new], 
+              local: false, 
+              class: "flex space-x-2 w-full", 
+              id: "new_message", 
+              data: { 
+                turbo_frame: "chat_content",
+                turbo_action: "replace"
+              }) do |f| %>
+            <%= f.text_area :context, 
+                placeholder: "Type your message...", 
+                rows: 1, 
+                class: "flex-grow min-w-[300px] w-full resize-none rounded-md border border-gray-300 p-2 focus:outline-none focus:ring-2 focus:ring-green-500 text-black",
+                disabled: local_assigns.fetch(:message_disabled, false) %>
+            
+            <%= f.submit "Send", 
+                class: "bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded-md transition duration-300 flex-shrink-0",
+                data: { 
+                  disable_with: "Sending...",
+                  turbo_submitting: true 
+                },
+                disabled: local_assigns.fetch(:message_disabled, false) %>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>

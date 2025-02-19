@@ -9,6 +9,7 @@ class ChatsController < ApplicationController
 
   # GET /chats/1 or /chats/1.json
   def show
+    @chats = current_user.chats
     respond_to do |format|
       format.html { render :show }
       format.turbo_stream

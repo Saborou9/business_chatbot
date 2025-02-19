@@ -1,5 +1,5 @@
 <%= turbo_stream.append "messages" do %>
-  <div class="flex justify-end w-full">
+  <div class="flex justify-end w-full pr-6">
     <div class="bg-gray-100 p-2 rounded-md max-w-[70%]">
       <p class="text-sm text-gray-700"><%= @message.context %></p>
       <small class="text-xs text-gray-500">You at <%= @message.created_at.strftime("%H:%M") %></small>
@@ -13,12 +13,9 @@
 
 <%= turbo_stream.append "messages" do %>
   <div class="flex justify-start w-full">
-    <div class="bg-green-500 text-white p-2 rounded-md max-w-[70%] animate-pulse">
-      <p class="text-sm">
-        <span class="animate-bounce inline-block">Generating</span> 
-        <span class="animate-bounce inline-block delay-100">response</span>
-        <span class="animate-bounce inline-block delay-200">...</span>
-      </p>
+    <div class="bg-green-500 text-white p-2 rounded-md max-w-[70%]">
+      <p class="text-sm"><%= @bot_message.context %></p>
+      <small class="text-xs text-gray-500">Bot at <%= @bot_message.created_at.strftime("%H:%M") %></small>
     </div>
   </div>
 <% end %>

@@ -234,7 +234,11 @@ class BuddyFlow(Flow[BuddyState]):
 
         # Prepare inputs dynamically based on available state
         inputs = {
-            "question": self.question
+            "question": self.question,
+            "market_research": "",
+            "search_results": "",
+            "business_knowledge": "",
+            "legal_analysis": "",
         }
 
         # Conditionally add inputs based on intent and available state
@@ -263,8 +267,10 @@ class BuddyFlow(Flow[BuddyState]):
         if response and response.pydantic:
             self.utils.save_step_result_to_file(self.directory, "response", response.pydantic, format="pydantic")
             self.state.response = response.pydantic
+            return self.state.response.final_response
         else:
             print("Error: Response crew returned no result")
+            return "Unable to answer your question, try asking again..."
 
 def kickoff():
     buddy_flow = BuddyFlow()

@@ -7,7 +7,7 @@ finalize_response:
     Instructions:
     - Use the following inputs to construct your answer:
      - Question: {question}
-     - Search Results (if available): {market_research}
+     - Search Results (if available): {search_results}
      - Business Knowledge (if available): {business_knowledge}
      - Legal Analysis (if available): {legal_analysis}
 

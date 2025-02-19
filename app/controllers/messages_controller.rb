@@ -1,6 +1,6 @@
-require 'net/http'
-require 'uri'
-require 'json'
+require "net/http"
+require "uri"
+require "json"
 
 class MessagesController < ApplicationController
   before_action :authenticate_user!
@@ -15,16 +15,23 @@ class MessagesController < ApplicationController
         bot_response = send_to_agent(@message.context)
 
         # Create bot message in the chat
-        bot_message = @chat.messages.create(
+        @bot_message = @chat.messages.new(
           context: bot_response,
-          user: User.find_by(email: 'bot@example.com')
+          user: current_user,
+          message_type: :bot
         )
 
-        format.turbo_stream
-        format.html { render partial: 'messages/message', locals: { message: @message }, status: :ok }
+        if @bot_message.save
+          format.html { redirect_to chat_path(@chat), notice: "Messages created" }
+          format.turbo_stream
+        else
+          puts "*" * 100
+          puts @bot_message.errors.full_messages
+          puts "*" * 100
+          format.turbo_stream { render partial: "error" }
+        end
       else
-        format.turbo_stream { render turbo_stream: turbo_stream.replace("new_message", partial: "messages/form", locals: { chat: @chat, message: @message }) }
-        format.html { render "chats/show", status: :unprocessable_entity }
+        format.turbo_stream { render partial: "error" }
       end
     end
   end
@@ -41,20 +48,20 @@ class MessagesController < ApplicationController
 
   def send_to_agent(question)
     uri = URI.parse("http://localhost:8000/run_agent/")
-    
+
     http = Net::HTTP.new(uri.host, uri.port)
-    request = Net::HTTP::Post.new(uri.path, 'Content-Type' => 'application/json')
-    request.body = { 
-      input: question, 
+    request = Net::HTTP::Post.new(uri.path, "Content-Type" => "application/json")
+    request.body = {
+      input: question,
       user_id: current_user.id,
-      model_name: @chat.preferred_model || 'gpt-3.5-turbo'
+      model_name: @chat.preferred_model || "gpt-3.5-turbo"
     }.to_json
 
     response = http.request(request)
-    
-    if response.code == '200'
+
+    if response.code == "200"
       parsed_response = JSON.parse(response.body)
-      parsed_response['response']
+      parsed_response["response"]
     else
       "Sorry, I couldn't generate a response at this time."
     end

@@ -1,0 +1,13 @@
+<%= turbo_stream.append "messages" do %>
+  <div class="flex justify-start w-full">
+    <div class="bg-red-500 text-white p-2 rounded-md max-w-[70%]">
+      <p class="text-sm">
+        Error generating response... Try again
+      </p>
+    </div>
+  </div>
+<% end %>
+
+<%= turbo_stream.update "new-message" do %>
+  <%= render 'messages/form', chat: @chat, message: Message.new, message_disabled: false %>
+<% end %>
