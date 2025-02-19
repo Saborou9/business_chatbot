@@ -36,8 +36,13 @@ async def run_agent(data: dict):
 
         flow_result = await flow.kickoff_async()
 
-        # Assuming the flow returns a response that can be extracted
-        response = flow_result.final_response if hasattr(flow_result, 'final_response') else "No response generated"
+        # Extract response using final_response
+        response = (
+            flow_result.state.response.final_response if 
+            hasattr(flow_result.state, 'response') and 
+            hasattr(flow_result.state.response, 'final_response') 
+            else "No response generated"
+        )
 
         return {"response": response}
     except Exception as e:
