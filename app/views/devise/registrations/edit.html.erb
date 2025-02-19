@@ -74,44 +74,43 @@
 
     <section id="api_keys" class="mb-8">
       <h2 class="text-2xl font-bold mb-6">API Keys</h2>
-      
+
       <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put, class: 'space-y-4' }) do |f| %>
         <%= render "devise/shared/error_messages", resource: resource %>
 
         <div class="form-group">
-          <%= f.label :deepseek, class: 'block mb-2' %>
-          <%= f.email_field :email, autofocus: true, 
-              class: 'w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-black' %>
+          <%= f.label :openai_api_key, "OpenAI API Key", class: 'block mb-2' %>
+          <%= f.password_field :openai_api_key,
+              class: 'w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-black',
+              placeholder: 'sk-...' %>
+          <p class="text-sm text-gray-600 mt-1">API key for OpenAI models (GPT-3.5, GPT-4)</p>
         </div>
 
         <div class="form-group">
-          <%= f.label :username, class: 'block mb-2' %>
-          <%= f.text_field :username, 
-              class: 'w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-black' %>
+          <%= f.label :deepseek_api_key, "Deepseek API Key", class: 'block mb-2' %>
+          <%= f.password_field :deepseek_api_key,
+              class: 'w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-black',
+              placeholder: 'Your Deepseek API key' %>
+          <p class="text-sm text-gray-600 mt-1">API key for Deepseek models</p>
         </div>
 
         <div class="form-group">
-          <%= f.label :password, "New Password", class: 'block mb-2' %>
-          <%= f.password_field :password, autocomplete: "new-password", 
-              class: 'w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-black' %>
-          <p class="text-sm text-gray-600 mt-1">Leave blank if you don't want to change it</p>
-        </div>
-
-        <div class="form-group">
-          <%= f.label :password_confirmation, class: 'block mb-2' %>
-          <%= f.password_field :password_confirmation, autocomplete: "new-password", 
-              class: 'w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-black' %>
+          <%= f.label :anthropic_api_key, "Anthropic API Key", class: 'block mb-2' %>
+          <%= f.password_field :anthropic_api_key,
+              class: 'w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-black',
+              placeholder: 'sk-ant-...' %>
+          <p class="text-sm text-gray-600 mt-1">API key for Anthropic Claude models</p>
         </div>
 
         <div class="form-group">
           <%= f.label :current_password, class: 'block mb-2' %>
-          <%= f.password_field :current_password, autocomplete: "current-password", 
+          <%= f.password_field :current_password, autocomplete: "current-password",
               class: 'w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-black' %>
           <p class="text-sm text-gray-600 mt-1">We need your current password to confirm your changes</p>
         </div>
 
         <div class="form-group">
-          <%= f.submit "Update Profile", class: 'bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition' %>
+          <%= f.submit "Update API Keys", class: 'bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition' %>
         </div>
       <% end %>
     </section>
