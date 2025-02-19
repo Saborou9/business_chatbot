@@ -54,7 +54,12 @@ class MessagesController < ApplicationController
     request.body = {
       input: question,
       user_id: current_user.id,
-      model_name: @chat.preferred_model || "gpt-3.5-turbo"
+      model_name: @chat.preferred_model || "gpt-3.5-turbo",
+      api_keys: {
+       openai: current_user.openai_api_key,
+       deepseek: current_user.deepseek_api_key,
+       anthropic: current_user.anthropic_api_key
+     }
     }.to_json
 
     response = http.request(request)

@@ -1,0 +1,55 @@
+<div class="container mx-auto px-4 py-8 max-w-4xl">
+   <h1 class="text-4xl font-bold mb-6 text-center text-green-500">About BusinessBuddy</h1>
+
+   <section class="bg-white shadow-md rounded-lg p-8 mb-8">
+     <h2 class="text-2xl font-semibold mb-4 text-gray-700">Our Mission</h2>
+     <p class="text-gray-600 mb-4">
+       BusinessBuddy is an AI-powered platform designed to help entrepreneurs,
+       professionals, and businesses leverage cutting-edge artificial intelligence
+       to solve complex problems, generate insights, and accelerate decision-making.
+     </p>
+   </section>
+
+   <section class="bg-white shadow-md rounded-lg p-8 mb-8">
+     <h2 class="text-2xl font-semibold mb-4 text-gray-700">Key Features</h2>
+     <ul class="list-disc list-inside text-gray-600 space-y-3">
+       <li>Multi-model AI support (OpenAI, Anthropic, Deepseek)</li>
+       <li>Contextual chat with advanced AI reasoning</li>
+       <li>Market research and business knowledge generation</li>
+       <li>Legal compliance and fact-checking</li>
+       <li>Secure and private conversations</li>
+     </ul>
+   </section>
+
+   <section class="bg-white shadow-md rounded-lg p-8 mb-8">
+     <h2 class="text-2xl font-semibold mb-4 text-gray-700">How It Works</h2>
+     <div class="grid md:grid-cols-3 gap-4">
+       <div class="bg-gray-100 p-4 rounded-lg">
+         <h3 class="font-bold mb-2">1. Ask a Question</h3>
+         <p class="text-sm text-gray-600">
+           Input your business-related query or challenge
+         </p>
+       </div>
+       <div class="bg-gray-100 p-4 rounded-lg">
+         <h3 class="font-bold mb-2">2. AI Analysis</h3>
+         <p class="text-sm text-gray-600">
+           Our AI processes your query using multiple intelligent models
+         </p>
+       </div>
+       <div class="bg-gray-100 p-4 rounded-lg">
+         <h3 class="font-bold mb-2">3. Comprehensive Response</h3>
+         <p class="text-sm text-gray-600">
+           Receive a detailed, actionable response tailored to your needs
+         </p>
+       </div>
+     </div>
+   </section>
+
+   <section class="text-center">
+     <h2 class="text-2xl font-semibold mb-4 text-green-500">Ready to Boost Your Business?</h2>
+     <% if !user_signed_in? %>
+       <%= link_to "Get Started", new_user_registration_path,
+           class: "bg-green-500 text-white px-6 py-3 rounded-lg hover:bg-green-600 transition duration-300 inline-block" %>
+     <% end %>
+   </section>
+ </div>

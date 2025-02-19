@@ -1,4 +1,4 @@
-def get_model_api_key(model_name: str = 'gpt-4o-mini-2024-07-18') -> str:
+def get_model_api_key(model_name: str = 'gpt-4o-mini-2024-07-18', user_api_key: Optional[str] = None) -> str:
     """
     Maps model names to their corresponding API key environment variable names.
     
@@ -6,18 +6,23 @@ def get_model_api_key(model_name: str = 'gpt-4o-mini-2024-07-18') -> str:
     :return: The corresponding API key environment variable name
     """
     model_api_key_mapping = {
-        'deepseek': 'DEEPSEEK_API_KEY',
-        '4o-mini': 'OPENAI_API_KEY',
-        '4o': 'OPENAI_API_KEY',
-        'sonnet': 'ANTHROPIC_API_KEY',
-        'haiku': 'ANTHROPIC_API_KEY'
+        'deepseek': ('DEEPSEEK_API_KEY', user_api_key),
+        '4o-mini': ('OPENAI_API_KEY', user_api_key),
+        '4o': ('OPENAI_API_KEY', user_api_key),
+        'sonnet': ('ANTHROPIC_API_KEY', user_api_key),
+        'haiku': ('ANTHROPIC_API_KEY', user_api_key)
     }
     
     # If model_name is a list, take the first element
     if isinstance(model_name, list):
         model_name = model_name[0] if model_name else 'gpt-4o-mini-2024-07-18'
     
-    return model_api_key_mapping.get(model_name, 'OPENAI_API_KEY')
+    env_var_name, custom_key = model_api_key_mapping.get(model_name, ('OPENAI_API_KEY', None))
+
+    if custom_key:
+        return custom_key
+
+    return env_var_name
 
 def get_model_identifier(model_name: str = 'gpt-4o-mini-2024-07-18') -> str:
     """

@@ -10,6 +10,7 @@ async def run_agent(data: dict):
     user_input = data.get("input", "")
     user_id = data.get("user_id", "unknown")
     model_name = data.get("model_name", "4o-mini")
+    api_keys: dict = {}
     
     if not user_input:
         raise HTTPException(status_code=400, detail="No input provided")
@@ -32,6 +33,7 @@ async def run_agent(data: dict):
             search_timeframe="d",
             search_results=10,
             search_results_parsed=2,
+            user_api_keys=data.api_keys
         )
 
         flow_result = await flow.kickoff_async()
