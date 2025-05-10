@@ -244,11 +244,14 @@ class BuddyFlow(Flow[BuddyState]):
         # Conditionally add inputs based on intent and available state
         intent = self.state.input_details.intent_classification
 
-        if intent == "market_research" and self.state.search_results:
-            inputs["search_results"] = self.state.search_results
+        if intent == "market_research" and self.state.search_results_links:
+            inputs["search_results"] = "\n".join(
+                [f"- {result.title}: {result.link}" 
+                 for result in self.state.search_results_links.search_results]
+            )
 
         if intent == "business_knowledge" and self.state.business_knowledge:
-            inputs["business_knowledge"] = self.state.business_knowledge
+            inputs["business_knowledge"] = str(self.state.business_knowledge.business_answer)
 
         if intent == "legal" and self.state.legal_analysis:
             inputs["legal_analysis"] = str(self.state.legal_analysis.legal_analysis)
