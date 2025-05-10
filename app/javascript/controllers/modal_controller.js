@@ -1,20 +1,33 @@
 import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
+  static targets = ["modal", "form", "titleInput"]
+
   connect() {
     this.modal = this.element
-    this.modal.classList.add("hidden") // Ensure modal starts hidden
+    // Don't add hidden class here - let HTML handle initial state
   }
 
   open(e) {
-    e.preventDefault()
+    if (e) e.preventDefault()
     this.modal.classList.remove("hidden")
     document.body.classList.add("overflow-hidden")
+    this.titleInputTarget?.focus()
   }
 
   close(e) {
     if (e) e.preventDefault()
     this.modal.classList.add("hidden")
     document.body.classList.remove("overflow-hidden")
+    this.formTarget?.reset()
+  }
+
+  handleSubmit(e) {
+    if (!this.titleInputTarget.value.trim()) {
+      e.preventDefault()
+      alert("Please enter a chat name")
+      this.titleInputTarget.focus()
+    }
+    // Let form submit normally if valid
   }
 }

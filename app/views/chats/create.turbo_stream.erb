@@ -1,0 +1,7 @@
+<%= turbo_stream.append "chats-sidebar" do %>
+  <%= render @chat %>
+<% end %>
+
+<%= turbo_stream.replace "new-chat-modal" do %>
+  <%= render "new_chat_modal" %>
+<% end %>
