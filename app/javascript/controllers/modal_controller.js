@@ -1,24 +1,25 @@
 import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
-  static targets = ["modal"]
+  static targets = ["modal", "form", "titleInput"]
 
   connect() {
-    // Find the modal element in the DOM
     this.modal = document.getElementById("new-chat-modal")
-  }
-
-  open() {
-    if (this.modal) {
-      this.modal.classList.remove("hidden")
-      document.body.classList.add("overflow-hidden")
-    }
+    this.modal.classList.remove("hidden") // Keep modal visible by default
   }
 
   close() {
     if (this.modal) {
       this.modal.classList.add("hidden")
       document.body.classList.remove("overflow-hidden")
+    }
+  }
+
+  validateAndSubmit(e) {
+    if (!this.titleInputTarget.value.trim()) {
+      e.preventDefault()
+      alert("Please enter a chat name")
+      this.titleInputTarget.focus()
     }
   }
 }
