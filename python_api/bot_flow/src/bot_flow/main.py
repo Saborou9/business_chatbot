@@ -215,7 +215,7 @@ class BuddyFlow(Flow[BuddyState]):
             inputs["business_knowledge"] = self.state.business_knowledge.dict()
 
         if intent == "legal" and self.state.legal_analysis:
-            inputs["legal_analysis"] = {"legal_analysis": self.state.legal_analysis.legal_analysis}
+            inputs["legal_analysis"] = str(self.state.legal_analysis.legal_analysis)
 
         result = (
             FactCheckingCrew(
@@ -251,7 +251,7 @@ class BuddyFlow(Flow[BuddyState]):
             inputs["business_knowledge"] = self.state.business_knowledge
 
         if intent == "legal" and self.state.legal_analysis:
-            inputs["legal_analysis"] = {"legal_analysis": self.state.legal_analysis.legal_analysis}
+            inputs["legal_analysis"] = str(self.state.legal_analysis.legal_analysis)
 
         # Kickoff the response crew with conditional inputs
         response_crew = (
