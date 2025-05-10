@@ -5,21 +5,28 @@ export default class extends Controller {
 
   connect() {
     this.modal = document.getElementById("new-chat-modal")
-    this.modal.classList.remove("hidden") // Keep modal visible by default
+  }
+
+  open() {
+    this.modal.classList.remove("hidden")
+    document.body.classList.add("overflow-hidden")
+    this.titleInputTarget?.focus()
   }
 
   close() {
-    if (this.modal) {
-      this.modal.classList.add("hidden")
-      document.body.classList.remove("overflow-hidden")
-    }
+    this.modal.classList.add("hidden")
+    document.body.classList.remove("overflow-hidden")
+    this.formTarget?.reset()
   }
 
-  validateAndSubmit(e) {
+  handleSubmit(e) {
+    e.preventDefault()
     if (!this.titleInputTarget.value.trim()) {
-      e.preventDefault()
       alert("Please enter a chat name")
-      this.titleInputTarget.focus()
+      return
     }
+    
+    // Submit form via Turbo
+    this.formTarget.requestSubmit()
   }
 }
