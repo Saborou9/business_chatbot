@@ -4,7 +4,7 @@ from datetime import datetime
 from typing import List
 from random import randint
 from pydantic import BaseModel
-from crewai.flow import Flow, listen, start, router, or_
+from crewai.flow.flow import Flow, listen, start, router, or_
 
 from bot_flow.src.bot_flow.types.types import SearchResult, InputProcessingOutput, SearchOutput, BusinessKnowledgeOutput, LegalOutput, FactCheckingOutput, ResponseOutput
 from bot_flow.src.bot_flow.shared_utils.flow_utils import FlowUtils
