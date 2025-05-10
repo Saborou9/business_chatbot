@@ -28,5 +28,7 @@
       </div>
     </main>
 
+    <%# Add this line to ensure modal is available globally %>
+    <%= render "chats/new_chat_modal" if user_signed_in? %>
   </body>
 </html>
