@@ -14,10 +14,6 @@ class ChatsController < ApplicationController
   # GET /chats/new
   def new
     @chat = current_user.chats.new
-    respond_to do |format|
-      format.html # Renders new.html.erb
-      format.turbo_stream # Renders new.turbo_stream.erb
-    end
   end
 
   # POST /chats

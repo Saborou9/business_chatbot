@@ -28,6 +28,6 @@
       </div>
     </main>
 
-    <%= turbo_frame_tag "modal" %>
+    <%= render "chats/new_chat_modal" if user_signed_in? %>
   </body>
 </html>
