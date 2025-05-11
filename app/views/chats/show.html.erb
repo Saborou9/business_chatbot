@@ -10,24 +10,26 @@
   <div class="flex-1 bg-gray-800 overflow-hidden">
     <%= turbo_frame_tag "chat_content" do %>
       <div class="p-4 h-full flex flex-col">
-        <div class="flex justify-center mb-4">
-          <%= form_with(model: @chat, url: update_preferred_model_chat_path(@chat), method: :patch, local: true, class: "w-full max-w-xs") do |f| %>
-            <%= f.select :preferred_model, 
-                [
-                  ['Deepseek', 'deepseek'], 
-                  ['GPT-4o-mini', '4o-mini'],
-                  ['GPT-4o', '4o'],
-                  ['Claude Sonnet', 'sonnet'], 
-                  ['Claude Haiku', 'haiku']
-                ], 
-                { selected: @chat.preferred_model || '4o-mini' },
-                {
-                  class: 'appearance-none bg-white border border-green-500 text-black text-sm rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 block w-full p-2.5',
-                  onchange: 'this.form.submit()'
-                } 
-            %>
-          <% end %>
-        </div>
+        <% if @chat.present? %>
+          <div class="flex justify-center mb-4">
+            <%= form_with(model: @chat, url: update_preferred_model_chat_path(@chat), method: :patch, local: true, class: "w-full max-w-xs") do |f| %>
+              <%= f.select :preferred_model, 
+                  [
+                    ['Deepseek', 'deepseek'], 
+                    ['GPT-4o-mini', '4o-mini'],
+                    ['GPT-4o', '4o'],
+                    ['Claude Sonnet', 'sonnet'], 
+                    ['Claude Haiku', 'haiku']
+                  ], 
+                  { selected: @chat.preferred_model || '4o-mini' },
+                  {
+                    class: 'appearance-none bg-white border border-green-500 text-black text-sm rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 block w-full p-2.5',
+                    onchange: 'this.form.submit()'
+                  } 
+              %>
+            <% end %>
+          </div>
+        <% end %>
 
         <div class="flex-grow overflow-y-auto mb-4 space-y-2" id="messages">
           <% @chat.messages.order(:created_at).each do |message| %>
@@ -44,27 +46,37 @@
         </div>
 
         <div class="mt-auto border-t pt-4" id="new-message">
-          <%= form_with(model: [@chat, Message.new], 
-              local: false, 
-              class: "flex space-x-2 w-full", 
-              id: "new_message", 
-              data: { 
-                turbo_frame: "chat_content",
-                turbo_action: "replace"
-              }) do |f| %>
-            <%= f.text_area :context, 
-                placeholder: "Type your message...", 
-                rows: 1, 
-                class: "flex-grow min-w-[300px] w-full resize-none rounded-md border border-gray-300 p-2 focus:outline-none focus:ring-2 focus:ring-green-500 text-black",
-                disabled: local_assigns.fetch(:message_disabled, false) %>
-            
-            <%= f.submit "Send", 
-                class: "bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded-md transition duration-300 flex-shrink-0",
+          <% if @chat.present? %>
+            <%= form_with(model: [@chat, Message.new], 
+                local: false, 
+                class: "flex space-x-2 w-full", 
+                id: "new_message", 
                 data: { 
-                  disable_with: "Sending...",
-                  turbo_submitting: true 
-                },
-                disabled: local_assigns.fetch(:message_disabled, false) %>
+                  turbo_frame: "chat_content",
+                  turbo_action: "replace"
+                }) do |f| %>
+              <%= f.text_area :context, 
+                  placeholder: "Type your message...", 
+                  rows: 1, 
+                  class: "flex-grow min-w-[300px] w-full resize-none rounded-md border border-gray-300 p-2 focus:outline-none focus:ring-2 focus:ring-green-500 text-black" %>
+              
+              <%= f.submit "Send", 
+                  class: "bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded-md transition duration-300 flex-shrink-0",
+                  data: { 
+                    disable_with: "Sending...",
+                    turbo_submitting: true 
+                  } %>
+            <% end %>
+          <% else %>
+            <div class="text-center py-8 bg-gray-100 rounded-lg">
+              <p class="text-gray-500 mb-4">No active chat selected</p>
+              <%= link_to "Create New Chat", "#", 
+                  class: "inline-flex items-center text-green-500 hover:text-green-400 px-4 py-2 rounded-md transition-colors group border border-green-500",
+                  data: { 
+                    controller: "modal",
+                    action: "click->modal#open" 
+                  } %>
+            </div>
           <% end %>
         </div>
       </div>
