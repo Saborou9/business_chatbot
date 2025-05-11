@@ -3,9 +3,13 @@ import { Controller } from "@hotwired/stimulus"
 export default class extends Controller {
   static targets = ["modal", "form", "titleInput"]
 
+  initialize() {
+    console.log("Modal controller initialized")
+  }
+
   connect() {
+    console.log("Modal connected")
     this.modal = this.element
-    // Don't add hidden class here - let HTML handle initial state
   }
 
   open(e) {
