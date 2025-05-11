@@ -4,7 +4,7 @@
   <div class="bg-white rounded-lg p-6 w-full max-w-md">
     <h2 class="text-xl font-bold mb-4">Create New Chat</h2>
     
-    <%= form_with(model: Chat.new, url: chats_path, class: "space-y-4", data: { modal_target: "form", action: "submit->modal#handleSubmit turbo:submit-end->modal#close" }) do |form| %>
+    <%= form_with(model: [current_user, Chat.new], url: chats_path, class: "space-y-4", data: { modal_target: "form", action: "submit->modal#handleSubmit turbo:submit-end->modal#close" }) do |form| %>
       <div class="field">
         <%= form.label :title, "Chat Title", class: "block text-sm font-medium text-gray-700" %>
         <%= form.text_field :title, 

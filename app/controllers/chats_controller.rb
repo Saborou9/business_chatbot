@@ -20,10 +20,13 @@ class ChatsController < ApplicationController
   def create
     @chat = current_user.chats.new(chat_params)
     
-    if @chat.save
-      redirect_to @chat, notice: "Chat created successfully"
-    else
-      render :new, status: :unprocessable_entity
+    respond_to do |format|
+      if @chat.save
+        format.html { redirect_to @chat, notice: "Chat created successfully" }
+        format.turbo_stream
+      else
+        format.html { render :new, status: :unprocessable_entity }
+      end
     end
   end
 
