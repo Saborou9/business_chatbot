@@ -1,73 +1,27 @@
 import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
-  static targets = ["modal", "form", "titleInput"]
+  static targets = ["modal"]
 
   initialize() {
-    console.debug("ModalController initialized")
+    console.log("ModalController initialized")
   }
 
   connect() {
-    console.debug("ModalController connected to element:", this.element)
-    this.modal = this.modalTarget || this.element
-    if (!this.modal) {
-      console.error("ModalController: No modal element found!")
-    }
+    console.log("ModalController connected to element:", this.element)
+    console.log("Data attributes:", this.element.dataset)
+    this.modal = document.getElementById("new-chat-modal")
+    console.log("Found modal element:", this.modal)
   }
 
   open(e) {
-    try {
-      if (e) e.preventDefault()
-      
-      if (!this.modal) {
-        console.error("ModalController: Cannot open - modal reference missing")
-        return
-      }
-
-      console.debug("Opening modal")
-      this.modal.classList.remove("hidden")
+    console.log("Button clicked - opening modal")
+    e.preventDefault()
+    const modal = document.getElementById("new-chat-modal")
+    console.log("Modal element at open time:", modal)
+    if (modal) {
+      modal.classList.remove("hidden")
       document.body.classList.add("overflow-hidden")
-      
-      if (this.hasTitleInputTarget) {
-        this.titleInputTarget.focus()
-      }
-    } catch (error) {
-      console.error("ModalController open error:", error)
-    }
-  }
-
-  close(e) {
-    try {
-      if (e) e.preventDefault()
-      
-      if (!this.modal) {
-        console.error("ModalController: Cannot close - modal reference missing")
-        return
-      }
-
-      console.debug("Closing modal")
-      this.modal.classList.add("hidden")
-      document.body.classList.remove("overflow-hidden")
-      
-      if (this.hasFormTarget) {
-        this.formTarget.reset()
-      }
-    } catch (error) {
-      console.error("ModalController close error:", error)
-    }
-  }
-
-  handleSubmit(e) {
-    try {
-      if (!this.hasTitleInputTarget || !this.titleInputTarget.value.trim()) {
-        e.preventDefault()
-        alert("Please enter a chat name")
-        if (this.hasTitleInputTarget) {
-          this.titleInputTarget.focus()
-        }
-      }
-    } catch (error) {
-      console.error("ModalController submit error:", error)
     }
   }
 }

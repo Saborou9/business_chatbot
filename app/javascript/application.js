@@ -2,15 +2,16 @@
 import "@hotwired/turbo-rails"
 import "controllers"
 
-// Add this to ensure Stimulus is properly initialized
+// Debug before registration
+console.log("Registering modal controller...")
+
+// Register controller
 import { application } from "controllers/application"
 import ModalController from "./controllers/modal_controller"
-
-// Manually register the controller
 application.register("modal", ModalController)
 
-// Debug statement to verify registration
-console.log("Registered controllers:", application.controllers)
+// Debug after registration
+console.log("Registered controllers:", Object.keys(application.controllers))
 
 // Eager load all controllers
 import { eagerLoadControllersFrom } from "@hotwired/stimulus-loading"
