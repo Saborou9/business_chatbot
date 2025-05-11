@@ -1,6 +1,16 @@
 class ChatsController < ApplicationController
   before_action :authenticate_user!
   
+  # GET /chats/:id
+  def show
+    @chat = current_user.chats.find_by(id: params[:id])
+    unless @chat
+      redirect_to chats_path, alert: "Chat not found"
+      return
+    end
+    @messages = @chat.messages.order(:created_at)
+  end
+
   # GET /chats/new
   def new
     @chat = current_user.chats.new

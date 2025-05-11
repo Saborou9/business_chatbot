@@ -3,7 +3,9 @@
     <%= render partial: 'sidebar' %>
   </div>
 
-  <%= turbo_stream_from @chat %>
+  <% if @chat.present? %>
+    <%= turbo_stream_from @chat %>
+  <% end %>
   
   <div class="flex-1 bg-gray-800 overflow-hidden">
     <%= turbo_frame_tag "chat_content" do %>
