@@ -1,0 +1,23 @@
+<%= turbo_stream.replace "modal" do %>
+  <div id="modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+    <div class="bg-white rounded-lg p-6 w-full max-w-md">
+      <h2 class="text-xl font-bold mb-4">Create New Chat</h2>
+      
+      <%= form_with(model: [current_user, Chat.new], url: chats_path) do |form| %>
+        <div class="field">
+          <%= form.label :title, class: "block text-sm font-medium text-gray-700" %>
+          <%= form.text_field :title, 
+                class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-black",
+                required: true %>
+        </div>
+        
+        <div class="flex justify-end space-x-3 pt-4">
+          <%= form.submit "Create", class: "px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700" %>
+          <%= link_to "Cancel", chats_path, 
+                      class: "px-4 py-2 bg-gray-200 text-gray-800 rounded hover:bg-gray-300",
+                      data: { turbo_action: "replace" } %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+<% end %>
