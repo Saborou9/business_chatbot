@@ -24,4 +24,30 @@ export default class extends Controller {
       document.body.classList.add("overflow-hidden")
     }
   }
+
+  close(e) {
+    if (e) e.preventDefault();
+    const modal = document.getElementById("new-chat-modal");
+    if (modal) {
+      modal.classList.add("hidden");
+      document.body.classList.remove("overflow-hidden");
+    }
+  }
+
+  handleManualOpen() {
+    this.connect(); // Force controller connection
+    const modal = document.getElementById('new-chat-modal');
+    if (modal) {
+      modal.classList.remove('hidden');
+      document.body.classList.add('overflow-hidden');
+    }
+  }
 }
+
+document.addEventListener('manual:open', () => {
+  const controller = application.getControllerForElementAndIdentifier(
+    document.getElementById('new-chat-modal'), 
+    'modal'
+  );
+  controller?.handleManualOpen();
+});
