@@ -1,9 +1,29 @@
 #!/bin/bash
+set -eo pipefail
+
+# Health check with timeout and retries
+check_service() {
+  local url=$1
+  local service=$2
+  local timeout=5
+  local retries=3
+  
+  for i in $(seq 1 $retries); do
+    if curl -sSf --max-time $timeout "$url" >/dev/null; then
+      echo "$service health check: OK"
+      return 0
+    fi
+    sleep 1
+  done
+  
+  echo "$service health check: FAILED (could not reach $url after $retries attempts)"
+  return 1
+}
 
 # Check Rails server
-curl -f http://localhost:80/health || exit 1
+check_service "http://localhost:80/health" "Rails"
 
 # Check Python API
-curl -f http://localhost:8000/health || exit 1
+check_service "http://localhost:8000/health" "Python API"
 
 exit 0
