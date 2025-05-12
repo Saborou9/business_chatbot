@@ -29,11 +29,11 @@ async def run_agent(data: Dict[str, Any]):
             lambda: BuddyFlow(
                 question=user_input,
                 directory=directory,
-                show_logs=False,
+                show_logs=True,
                 model_name=model_name,
                 search_timeframe="d",
                 search_results=10,
-                search_results_parsed=2,
+                search_results_parsed=1,
             ).kickoff()
         )
 
