@@ -52,19 +52,21 @@
                 class: "flex space-x-2 w-full", 
                 id: "new_message", 
                 data: { 
-                  turbo_frame: "chat_content",
-                  turbo_action: "replace"
+                  controller: "message-form",
+                  action: "turbo:submit-end->message-form#resetForm",
+                  turbo_frame: "chat_content"
                 }) do |f| %>
               <%= f.text_area :context, 
                   placeholder: "Type your message...", 
                   rows: 1, 
-                  class: "flex-grow min-w-[300px] w-full resize-none rounded-md border border-gray-300 p-2 focus:outline-none focus:ring-2 focus:ring-green-500 text-black" %>
+                  class: "flex-grow min-w-[300px] w-full resize-none rounded-md border border-gray-300 p-2 focus:outline-none focus:ring-2 focus:ring-green-500 text-black",
+                  data: { message_form_target: "input" } %>
               
               <%= f.submit "Send", 
-                  class: "bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded-md transition duration-300 flex-shrink-0",
+                  class: "bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded-md transition duration-300 flex-shrink-0 disabled:opacity-50",
                   data: { 
                     disable_with: "Sending...",
-                    turbo_submitting: true 
+                    message_form_target: "submit"
                   } %>
             <% end %>
           <% else %>
