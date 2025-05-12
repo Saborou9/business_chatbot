@@ -1,0 +1,9 @@
+#!/bin/bash
+
+# Check Rails server
+curl -f http://localhost:80/health || exit 1
+
+# Check Python API
+curl -f http://localhost:8000/health || exit 1
+
+exit 0

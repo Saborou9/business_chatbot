@@ -16,8 +16,15 @@ WORKDIR /rails
 
 # Install base packages
 RUN apt-get update -qq && \
-    apt-get install --no-install-recommends -y curl libjemalloc2 libvips postgresql-client && \
+    apt-get install --no-install-recommends -y curl libjemalloc2 libvips postgresql-client logrotate && \
     rm -rf /var/lib/apt/lists /var/cache/apt/archives
+
+# Add health check script
+COPY bin/healthcheck /rails/bin/
+RUN chmod +x /rails/bin/healthcheck
+
+# Add logrotate config
+COPY config/logrotate.conf /etc/logrotate.d/matura
 
 # Set production environment
 ENV RAILS_ENV="production" \
@@ -54,6 +61,9 @@ RUN SECRET_KEY_BASE_DUMMY=1 ./bin/rails assets:precompile
 # Final stage for app image
 FROM base
 
+HEALTHCHECK --interval=30s --timeout=30s --start-period=5s --retries=3 \
+  CMD /rails/bin/healthcheck
+
 # Copy built artifacts: gems, application
 COPY --from=build "${BUNDLE_PATH}" "${BUNDLE_PATH}"
 COPY --from=build /rails /rails
@@ -67,6 +77,8 @@ USER 1000:1000
 # Entrypoint prepares the database.
 ENTRYPOINT ["/rails/bin/docker-entrypoint"]
 
-# Start server via Thruster by default, this can be overwritten at runtime
-EXPOSE 80
-CMD ["./bin/thrust", "./bin/rails", "server"]
+# Expose both Rails (80) and Python API (8000) ports
+EXPOSE 80 8000
+
+# Start both servers using the entrypoint's combined mode
+CMD ["combined"]
