@@ -28,6 +28,7 @@ class BuddyState(BaseModel):
     legal_analysis: LegalOutput = LegalOutput()
     fact_checked_info: FactCheckingOutput = FactCheckingOutput()
     response: ResponseOutput = ResponseOutput()
+    is_processing: bool = False
 
 
 class BuddyFlow(Flow[BuddyState]):
@@ -231,49 +232,58 @@ class BuddyFlow(Flow[BuddyState]):
     @listen(or_(parse_results, business_knowledge, legal))
     def response(self):
         print("Generating response")
+        self.state.is_processing = True
+        
+        try:
+            # Prepare inputs dynamically based on available state
+            inputs = {
+                "question": self.question,
+                "market_research": "",
+                "search_results": "",
+                "business_knowledge": "",
+                "legal_analysis": "",
+            }
 
-        # Prepare inputs dynamically based on available state
-        inputs = {
-            "question": self.question,
-            "market_research": "",
-            "search_results": "",
-            "business_knowledge": "",
-            "legal_analysis": "",
-        }
+            # Conditionally add inputs based on intent and available state
+            intent = self.state.input_details.intent_classification
 
-        # Conditionally add inputs based on intent and available state
-        intent = self.state.input_details.intent_classification
+            if intent == "market_research" and self.state.search_results_links:
+                inputs["search_results"] = "\n".join(
+                    [f"- {result.title}: {result.link}" 
+                     for result in self.state.search_results_links.search_results]
+                )
 
-        if intent == "market_research" and self.state.search_results_links:
-            inputs["search_results"] = "\n".join(
-                [f"- {result.title}: {result.link}" 
-                 for result in self.state.search_results_links.search_results]
+            if intent == "business_knowledge" and self.state.business_knowledge:
+                inputs["business_knowledge"] = str(self.state.business_knowledge)
+
+            if intent == "legal" and self.state.legal_analysis:
+                inputs["legal_analysis"] = str(self.state.legal_analysis.legal_analysis)
+
+            # Kickoff the response crew with conditional inputs
+            response_crew = (
+                ResponseCrew(
+                    show_logs=self.show_logs,
+                    model_name=self.model_name
+                )
             )
 
-        if intent == "business_knowledge" and self.state.business_knowledge:
-            inputs["business_knowledge"] = str(self.state.business_knowledge)
+            response = response_crew.crew().kickoff(inputs=inputs)
 
-        if intent == "legal" and self.state.legal_analysis:
-            inputs["legal_analysis"] = str(self.state.legal_analysis.legal_analysis)
-
-        # Kickoff the response crew with conditional inputs
-        response_crew = (
-            ResponseCrew(
-                show_logs=self.show_logs,
-                model_name=self.model_name
-            )
-        )
-
-        response = response_crew.crew().kickoff(inputs=inputs)
-
-        # Ensure we save the pydantic result
-        if response and response.pydantic:
-            self.utils.save_step_result_to_file(self.directory, "response", response.pydantic, format="pydantic")
-            self.state.response = response.pydantic
-            return self.state.response.final_response
-        else:
-            print("Error: Response crew returned no result")
-            return "Unable to answer your question, try asking again..."
+            # Ensure we save the pydantic result
+            if response and response.pydantic:
+                self.utils.save_step_result_to_file(self.directory, "response", response.pydantic, format="pydantic")
+                self.state.response = response.pydantic
+                return self.state.response.final_response
+            else:
+                print("Error: Response crew returned no result")
+                return "Unable to answer your question, try asking again..."
+                
+        except Exception as e:
+            print(f"Error generating response: {str(e)}")
+            return f"Error processing your request: {str(e)}"
+            
+        finally:
+            self.state.is_processing = False
 
 def kickoff():
     buddy_flow = BuddyFlow()
