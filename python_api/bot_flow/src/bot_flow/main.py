@@ -212,7 +212,7 @@ class BuddyFlow(Flow[BuddyState]):
         intent = self.state.input_details.intent_classification
 
         if intent == "business_knowledge" and self.state.business_knowledge:
-            inputs["business_knowledge"] = str(self.state.business_knowledge)
+            inputs["business_knowledge"] = str(self.state.business_knowledge.dict())
 
         if intent == "legal" and self.state.legal_analysis:
             inputs["legal_analysis"] = str(self.state.legal_analysis.legal_analysis)
@@ -251,7 +251,7 @@ class BuddyFlow(Flow[BuddyState]):
             )
 
         if intent == "business_knowledge" and self.state.business_knowledge:
-            inputs["business_knowledge"] = str(self.state.business_knowledge.business_answer)
+            inputs["business_knowledge"] = str(self.state.business_knowledge)
 
         if intent == "legal" and self.state.legal_analysis:
             inputs["legal_analysis"] = str(self.state.legal_analysis.legal_analysis)
