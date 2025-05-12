@@ -5,7 +5,7 @@
     data: { 
       turbo_frame: "chat_content",
       controller: "message-form",
-      action: "turbo:submit-end->message-form#resetForm"
+      action: "turbo:submit-start->message-form#showLoading turbo:submit-end->message-form#hideLoading"
     }) do |f| %>
   <%= f.text_area :context, 
       placeholder: "Type your message...", 

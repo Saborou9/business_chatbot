@@ -42,6 +42,13 @@
               </div>
             </div>
           <% end %>
+
+          <% if @processing %>
+            <div id="loading-indicator" class="flex justify-center items-center h-16">
+              <div class="animate-pulse text-white text-lg">Thinking...</div>
+            </div>
+          <% end %>
+
           <div id="bot_response_placeholder"></div>
         </div>
 
