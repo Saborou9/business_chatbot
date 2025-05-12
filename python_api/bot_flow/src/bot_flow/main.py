@@ -178,7 +178,7 @@ class BuddyFlow(Flow[BuddyState]):
             )
             .crew()
             .kickoff(inputs={
-                "refined_question": self.state.input_details.refined_question,
+                "question": self.state.input_details.refined_question,
             })
         )
         self.state.business_knowledge = result.pydantic
@@ -212,7 +212,7 @@ class BuddyFlow(Flow[BuddyState]):
         intent = self.state.input_details.intent_classification
 
         if intent == "business_knowledge" and self.state.business_knowledge:
-            inputs["business_knowledge"] = self.state.business_knowledge.dict()
+            inputs["business_knowledge"] = str(self.state.business_knowledge)
 
         if intent == "legal" and self.state.legal_analysis:
             inputs["legal_analysis"] = str(self.state.legal_analysis.legal_analysis)
