@@ -5,14 +5,18 @@ export default class extends Controller {
 
   showLoading() {
     this.submitTarget.disabled = true
-    // Show loading indicator
-    document.getElementById('loading-indicator')?.classList.remove('hidden')
+    const loadingIndicator = document.getElementById('loading-indicator')
+    if (loadingIndicator) {
+      loadingIndicator.classList.remove('hidden')
+    }
   }
 
   hideLoading() {
     this.submitTarget.disabled = false
-    // Hide loading indicator
-    document.getElementById('loading-indicator')?.classList.add('hidden')
+    const loadingIndicator = document.getElementById('loading-indicator')
+    if (loadingIndicator) {
+      loadingIndicator.classList.add('hidden')
+    }
     this.inputTarget.value = ""
   }
 }

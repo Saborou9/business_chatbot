@@ -3,9 +3,9 @@
     class: "flex space-x-2 w-full", 
     id: "new_message",
     data: { 
-      turbo_frame: "chat_content",
       controller: "message-form",
-      action: "turbo:submit-start->message-form#showLoading turbo:submit-end->message-form#hideLoading"
+      action: "turbo:submit-start->message-form#showLoading turbo:submit-end->message-form#hideLoading",
+      turbo_frame: "chat_content"
     }) do |f| %>
   <%= f.text_area :context, 
       placeholder: "Type your message...", 
