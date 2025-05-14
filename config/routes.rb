@@ -15,9 +15,6 @@ Rails.application.routes.draw do
   get "/about", to: "pages#about", as: :about
   get "/pricing", to: "pages#pricing", as: :pricing
 
-  # redirect /features to the home page’s #features section
-  get "/features", to: redirect("/#features")
-
   # Chat health-check
   get "up" => "rails/health#show", as: :rails_health_check
 

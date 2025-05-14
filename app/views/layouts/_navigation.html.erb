@@ -11,7 +11,12 @@
         <% if user_signed_in? %>
           <%= link_to "Chat", chats_path, class: "text-white hover:text-green-400 px-3 py-2 rounded-md text-sm font-medium" %>
         <% else %>
-          <%= link_to "Features", root_path(anchor: 'features'), class: "text-white hover:text-green-400 px-3 py-2 rounded-md text-sm font-medium" %>
+          <%
+=begin%>
+ <%= link_to "Features", root_path(anchor: 'features'), class: "text-white hover:text-green-400 px-3 py-2 rounded-md text-sm font-medium" %> 
+<%
+=end%>
+          <a href="#features" data-turbo="false" class="text-white hover:text-green-400 px-3 py-2 rounded-md text-sm font-medium">Features</a>
           <%= link_to "About", about_path, class: "text-white hover:text-green-400 px-3 py-2 rounded-md text-sm font-medium" %>
           <%= link_to "Pricing", pricing_path, class: "text-white hover:text-green-400 px-3 py-2 rounded-md text-sm font-medium" %>
         <% end %>
