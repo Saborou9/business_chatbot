@@ -12,7 +12,11 @@
           </svg>
           <h2 class="text-2xl font-bold mb-4">No Chats Yet</h2>
           <p class="text-gray-400 mb-6">Start a new conversation to get began</p>
-          <%= link_to "Create New Chat", new_chat_path, class: "bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded-lg transition duration-300 ease-in-out transform hover:scale-105" %>
+          <%
+=begin%>
+ <%= link_to "Create New Chat", new_chat_path, class: "bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded-lg transition duration-300 ease-in-out transform hover:scale-105" %> 
+<%
+=end%>
         </div>
       <% else %>
         <div class="flex items-center justify-center h-full text-white">
