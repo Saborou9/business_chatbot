@@ -140,13 +140,14 @@
   <!-- Accordion -->
   <div class="mt-10 space-y-4" x-data="{ selected: null }">
     <template x-for="(faq, index) in [
-      { question: 'What is Jellypod?', answer: 'Jellypod is an AI-powered podcast platform for creating and managing shows easily.' },
-      { question: 'How does it work?', answer: 'You upload your script or audio, and our AI helps with editing, hosting, and publishing.' },
-      { question: 'What are the pricing plans?', answer: 'We offer flexible monthly plans for creators, agencies, and enterprises.' },
-      { question: 'Can I add my own intro or outro music?', answer: 'Yes, you can upload and customize your podcast with your own audio files.' },
-      { question: 'Do you provide caption files (.srt) for my podcast episodes?', answer: 'Yes, we automatically generate .srt caption files for accessibility.' },
+      { question: 'What is BusinessBuddy?', answer: 'BusinessBuddy is an AI-powered chatbot that helps with legal, business, and market research questions.' },
+      { question: 'How does it work?', answer: 'Simply type (or paste) your question in the chat. BusinessBuddy's CrewAI-based agent team breaks the request into subtasks, consults up-to-date data sources, cross-checks the facts and returns a concise, actionable answer—usually in under five seconds.' },
+      { question: 'What are the pricing plans?', answer: 'We offer flexible monthly plans for single-person companie, startups, and enterprises.' },
+      { question: 'Is my information protected?', answer: 'Yes. Every message is encrypted in transit with TLS 1.3 and stored in an EU-based database encrypted at rest (AES-256). You control the retention period—delete chats at any time, or set automatic purging after 30 days. Logs are never used to train third-party models without your explicit consent, and we are fully compliant with GDPR and ISO 27001 guidelines.' },
+      { question: 'Is your information credible?', answer: 'Our multi-agent pipeline includes a dedicated Fact-Check agent that cross-verifies each response against statutory sources (e.g., Slov-lex for legislation, FinStat for company data) and reputable market reports. If the agents detect low confidence, they either request clarification or cite the original source so you can verify it yourself.' },
       { question: 'Do you have an API?', answer: 'Yes, we provide API access for enterprise and integration use cases.' },
-      { question: 'Who owns the content?', answer: 'You fully own your podcast content and intellectual property.' }
+      { question: 'Can I use BusinessBuddy for free?', answer: 'Yes, we offer a free trial with limited features. Sign up to explore!' },
+      { question: 'How can I contact support?', answer: 'You can reach our support team via the help center or email us at contact@businessbuddy.ai.' },
     ]" :key="index">
       <div class="border-b border-gray-200">
         <button 
