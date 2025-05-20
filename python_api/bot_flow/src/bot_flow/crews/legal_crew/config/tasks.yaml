@@ -5,5 +5,5 @@ provide_legal_guidance:
     - Provide a general explanation and guidance on best practices.
     - Avoid offering direct legal advice and instead direct users to consult a professional if needed.
   expected_output: >
-    - A clear and structured legal guidance response: "{legal_guidance}".
+    - A clear and structured legal guidance response (in the same language as the question): "{legal_guidance}".
     - A disclaimer emphasizing that professional legal advice may be required.

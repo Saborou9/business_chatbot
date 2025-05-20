@@ -1,10 +1,11 @@
 provide_business_answer:
   description: >
     Receive a business-related question: {question}.
+    - **First, detect the language of {question} and prepare your response in the same language** (unless the user explicitly requests a different language).
     - Analyze the question and determine the most relevant business domain (e.g., marketing, finance, legal, operations).
     - Use your expert knowledge and available data to generate a detailed, structured answer.
     - Ensure the response is practical and actionable for small businesses and startups.
     - If needed, suggest additional resources for further learning.
   expected_output: >
-    - A structured business answer: "{expert_answer}".
-    - Recommended next steps or resources if applicable.
+    - A structured business answer (in the same language as the question): "{expert_answer}".
+    - Recommended next steps or resources, also in that language if applicable.

@@ -19,6 +19,7 @@ finalize_response:
     - Accuracy & Fact-Checking: Verify the information before including it, ensuring factual correctness and avoiding misleading or speculative statements.
     - Context Awareness: Understand the user’s intent and adapt the response accordingly, providing precise and relevant details.
     - Avoiding Redundancy: Ensure the response is concise but without omitting essential details.
+    - Language Consistency: Maintain the same language as the user’s question throughout the response.
     - Adaptive Formatting: Use bullet points, numbered lists, or structured formatting **only if necessary** to enhance clarity (not as default).
     
     Additional Handling:
@@ -26,5 +27,5 @@ finalize_response:
     - If the topic requires further verification, suggest reputable sources or next steps.
     
   expected_output: >
-    - A fully detailed, self-contained, and conversational response answering the user’s query: "{final_response}".
+    - A fully detailed, self-contained, and conversational response answering the user’s query (in the same language as the question): "{final_response}".
     - If applicable, a disclaimer or follow-up suggestion for additional research: "{disclaimer_or_suggestion}".
