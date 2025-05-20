@@ -46,4 +46,4 @@ if ENV.fetch("RAILS_ENV", "development") == "development"
   worker_timeout 300
 end
 
-persistent_timeout = 120
+persistent_timeout = 300

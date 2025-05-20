@@ -32,7 +32,7 @@ async def run_agent(data: Dict[str, Any]):
                 show_logs=True,
                 model_name=model_name,
                 search_timeframe="d",
-                search_results=10,
+                search_results=2,
                 search_results_parsed=1,
             ).kickoff()
         )
